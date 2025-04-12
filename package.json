@@ -1,0 +1,15 @@
+{
+  "name": "accident-analyser",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter \"@accident-analyser/*\" dev",
+    "build": "pnpm --filter \"@accident-analyser/*\" build",
+    "start": "pnpm --filter \"@accident-analyser/backend\" start",
+    "test": "pnpm --filter \"@accident-analyser/*\" test",
+    "lint": "pnpm --filter \"@accident-analyser/*\" lint"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
