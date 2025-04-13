@@ -92,17 +92,71 @@ export function Analytics() {
 
   const handleDateRangeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    if (value === "all") {
-      setDateRange({});
-    } else {
-      const endDate = new Date();
-      const startDate = new Date();
-      startDate.setFullYear(startDate.getFullYear() - parseInt(value));
-      setDateRange({
-        startDate: format(startDate, "yyyy-MM-dd"),
-        endDate: format(endDate, "yyyy-MM-dd"),
-      });
+    const endDate = new Date();
+    const startDate = new Date();
+
+    switch (value) {
+      case "today":
+        startDate.setHours(0, 0, 0, 0);
+        break;
+      case "yesterday":
+        startDate.setDate(startDate.getDate() - 1);
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setDate(endDate.getDate() - 1);
+        endDate.setHours(23, 59, 59, 999);
+        break;
+      case "this_week":
+        startDate.setDate(startDate.getDate() - startDate.getDay());
+        startDate.setHours(0, 0, 0, 0);
+        break;
+      case "last_week":
+        startDate.setDate(startDate.getDate() - startDate.getDay() - 7);
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setDate(endDate.getDate() - endDate.getDay() - 1);
+        endDate.setHours(23, 59, 59, 999);
+        break;
+      case "this_month":
+        startDate.setDate(1);
+        startDate.setHours(0, 0, 0, 0);
+        break;
+      case "last_month":
+        startDate.setMonth(startDate.getMonth() - 1);
+        startDate.setDate(1);
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setDate(0);
+        endDate.setHours(23, 59, 59, 999);
+        break;
+      case "this_year":
+        startDate.setMonth(0, 1);
+        startDate.setHours(0, 0, 0, 0);
+        break;
+      case "last_1":
+        startDate.setFullYear(startDate.getFullYear() - 1);
+        startDate.setHours(0, 0, 0, 0);
+        break;
+      case "last_2":
+        startDate.setFullYear(startDate.getFullYear() - 2);
+        startDate.setHours(0, 0, 0, 0);
+        break;
+      case "last_5":
+        startDate.setFullYear(startDate.getFullYear() - 5);
+        startDate.setHours(0, 0, 0, 0);
+        break;
+      case "all":
+        setDateRange({});
+        return;
+      default:
+        if (value.startsWith("last_")) {
+          const years = parseInt(value.split("_")[1]);
+          startDate.setFullYear(startDate.getFullYear() - years);
+          startDate.setHours(0, 0, 0, 0);
+        }
     }
+
+    setDateRange({
+      start_date: format(startDate, "yyyy-MM-dd"),
+      end_date: format(endDate, "yyyy-MM-dd"),
+    });
   };
 
   const handleRefresh = () => {
@@ -126,10 +180,17 @@ export function Analytics() {
               placeholder="Select time range"
               bg={cardBg}
             >
+              <option value="today">Today</option>
+              <option value="yesterday">Yesterday</option>
+              <option value="this_week">This Week</option>
+              <option value="last_week">Last Week</option>
+              <option value="this_month">This Month</option>
+              <option value="last_month">Last Month</option>
+              <option value="this_year">This Year</option>
+              <option value="last_1">Last Year</option>
+              <option value="last_2">Last 2 Years</option>
+              <option value="last_5">Last 5 Years</option>
               <option value="all">All Time</option>
-              <option value="1">Last Year</option>
-              <option value="2">Last 2 Years</option>
-              <option value="5">Last 5 Years</option>
             </Select>
             <Tooltip label="Refresh data">
               <IconButton
