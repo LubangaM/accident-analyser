@@ -54,7 +54,9 @@ def get_accidents_by_severity(
     # First, get the total count with date filters
     total_query = db.query(func.count(Accident.id))
     if start_date:
-        total_query = total_query.filter(cast(Accident.date, Date) >= start_date)
+        total_query = total_query.filter(
+            cast(Accident.date, Date) >= start_date,
+        )
     if end_date:
         total_query = total_query.filter(cast(Accident.date, Date) <= end_date)
     total = total_query.scalar() or 1
@@ -90,7 +92,9 @@ def get_accidents_by_road_type(
     # First, get the total count with date filters
     total_query = db.query(func.count(Accident.id))
     if start_date:
-        total_query = total_query.filter(cast(Accident.date, Date) >= start_date)
+        total_query = total_query.filter(
+            cast(Accident.date, Date) >= start_date,
+        )
     if end_date:
         total_query = total_query.filter(cast(Accident.date, Date) <= end_date)
     total = total_query.scalar() or 1
@@ -125,9 +129,13 @@ def get_accidents_by_weather(
         # First, get the total count with date filters
         total_query = db.query(func.count(Accident.id))
         if start_date:
-            total_query = total_query.filter(cast(Accident.date, Date) >= start_date)
+            total_query = total_query.filter(
+                cast(Accident.date, Date) >= start_date,
+            )
         if end_date:
-            total_query = total_query.filter(cast(Accident.date, Date) <= end_date)
+            total_query = total_query.filter(
+                cast(Accident.date, Date) <= end_date,
+            )
         total = total_query.scalar() or 1
 
         # Then get the grouped data

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import {
   Box,
@@ -86,7 +87,6 @@ export function Analytics() {
   const { data: topLocations, refetch: refetchLocations } =
     useTopLocations(dateRange);
 
-  const bgColor = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.200", "gray.700");
   const cardBg = useColorModeValue("white", "gray.700");
 
@@ -291,7 +291,9 @@ export function Analytics() {
                           key={`cell-${index}`}
                           fill={
                             SeverityColors[
-                              entry.severity as keyof typeof SeverityColors
+                              Number(
+                                entry.severity
+                              ) as keyof typeof SeverityColors
                             ]
                           }
                         />
@@ -378,7 +380,7 @@ export function Analytics() {
                     <XAxis dataKey="weather_condition" />
                     <YAxis />
                     <RechartsTooltip
-                      formatter={(value: number, name: string, props: any) => [
+                      formatter={(value: number, _name: string, props: any) => [
                         `${value} accidents (${props.payload.percentage.toFixed(
                           1
                         )}%)`,

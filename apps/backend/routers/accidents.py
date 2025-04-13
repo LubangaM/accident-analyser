@@ -28,17 +28,53 @@ async def upload_accidents(
 
     for index, row in df.iterrows():
         accident = Accident(
-            id=row["id"],
             date=row["date"],
-            time=row["time"],
-            location=row["location"],
+            time=row.get("time"),
+            location_easting=row.get("location_easting"),
+            location_northing=row.get("location_northing"),
+            longitude=row.get("longitude"),
+            latitude=row.get("latitude"),
+            police_force=row.get("police_force"),
+            accident_severity=row["accident_severity"],
+            number_of_vehicles=row.get("number_of_vehicles"),
+            number_of_casualties=row.get("number_of_casualties"),
+            day_of_week=row.get("day_of_week"),
+            local_authority_district=row.get("local_authority_district"),
+            local_authority_highway=row.get("local_authority_highway"),
+            first_road_class=row.get("first_road_class"),
+            first_road_number=row.get("first_road_number"),
+            road_type=row.get("road_type"),
+            speed_limit=row.get("speed_limit"),
+            junction_control=row.get("junction_control"),
+            second_road_class=row.get("second_road_class"),
+            second_road_number=row.get("second_road_number"),
+            pedestrian_crossing_human_control=row.get(
+                "pedestrian_crossing_human_control"
+            ),
+            pedestrian_crossing_physical_facilities=row.get(
+                "pedestrian_crossing_physical_facilities"
+            ),
+            light_conditions=row.get("light_conditions"),
+            weather_conditions=row.get("weather_conditions"),
+            road_surface_conditions=row.get("road_surface_conditions"),
+            special_conditions_at_site=row.get("special_conditions_at_site"),
+            carriageway_hazards=row.get("carriageway_hazards"),
+            urban_or_rural_area=row.get("urban_or_rural_area"),
+            did_police_officer_attend=row.get("did_police_officer_attend"),
+            lsoa_of_accident_location=row.get("lsoa_of_accident_location"),
+            year=row.get("year"),
         )
 
         accidents.append(accident)
 
     db.add_all(accidents)
     db.commit()
-    return {"message": "Accidents uploaded successfully"}
+    return {
+        "message": "Accidents uploaded successfully",
+        "count": len(
+            accidents,
+        ),
+    }
 
 
 @router.get("/", response_model=List[AccidentSchema])
