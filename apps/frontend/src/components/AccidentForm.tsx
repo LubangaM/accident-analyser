@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import {
-  useAccident,
+  // useAccident,
   useCreateAccident,
   useUpdateAccident,
 } from "../hooks/useAccidents";
@@ -28,8 +28,8 @@ export function AccidentForm() {
   const { id } = useParams({ from: "/accidents/$id/edit" });
   const navigate = useNavigate();
   const toast = useToast();
-  const { register, handleSubmit, reset } = useForm<AccidentCreate>();
-  const { data: accident } = useAccident(Number(id));
+  const { register, handleSubmit } = useForm<AccidentCreate>();
+  // const { data: accident } = useAccident(Number(id));
   const createAccident = useCreateAccident();
   const updateAccident = useUpdateAccident();
 
@@ -148,8 +148,12 @@ export function AccidentForm() {
           <FormControl>
             <FormLabel>Weather Conditions</FormLabel>
             <Select {...register("weather_conditions")}>
-              <option value="Fine without high winds">Fine without high winds</option>
-              <option value="Raining without high winds">Raining without high winds</option>
+              <option value="Fine without high winds">
+                Fine without high winds
+              </option>
+              <option value="Raining without high winds">
+                Raining without high winds
+              </option>
               <option value="Fog or mist">Fog or mist</option>
             </Select>
           </FormControl>
@@ -157,9 +161,15 @@ export function AccidentForm() {
           <FormControl>
             <FormLabel>Light Conditions</FormLabel>
             <Select {...register("light_conditions")}>
-              <option value="Daylight: Street light present">Daylight: Street light present</option>
-              <option value="Darkness: Street lights present and lit">Darkness: Street lights present and lit</option>
-              <option value="Darkness: Street lighting unknown">Darkness: Street lighting unknown</option>
+              <option value="Daylight: Street light present">
+                Daylight: Street light present
+              </option>
+              <option value="Darkness: Street lights present and lit">
+                Darkness: Street lights present and lit
+              </option>
+              <option value="Darkness: Street lighting unknown">
+                Darkness: Street lighting unknown
+              </option>
             </Select>
           </FormControl>
         </SimpleGrid>

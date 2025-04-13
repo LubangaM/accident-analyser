@@ -27,13 +27,15 @@ interface UploadResponse {
   status: string;
 }
 
-interface UploadError {
-  row: number;
-  error: string;
-}
+// interface UploadError {
+//   row: number;
+//   error: string;
+// }
 
 export const Upload: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [preview, setPreview] = useState<any[]>([]);
   const toast = useToast();
 

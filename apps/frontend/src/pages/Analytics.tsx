@@ -136,12 +136,21 @@ export function Analytics() {
                 outerRadius={80}
                 label
               >
-                {roadTypeStats?.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
+                {roadTypeStats?.map(
+                  (
+                    entry: {
+                      road_type: string;
+                      count: number;
+                      percentage: number;
+                    },
+                    index: number
+                  ) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  )
+                )}
               </Pie>
               <Tooltip />
               <Legend />
@@ -174,15 +183,21 @@ export function Analytics() {
                 </Tr>
               </Thead>
               <Tbody>
-                {topLocations?.map((location) => (
-                  <Tr key={`${location.longitude}-${location.latitude}`}>
-                    <Td>
-                      {location.longitude.toFixed(4)},{" "}
-                      {location.latitude.toFixed(4)}
-                    </Td>
-                    <Td>{location.count}</Td>
-                  </Tr>
-                ))}
+                {topLocations?.map(
+                  (location: {
+                    longitude: number;
+                    latitude: number;
+                    count: number;
+                  }) => (
+                    <Tr key={`${location.longitude}-${location.latitude}`}>
+                      <Td>
+                        {location.longitude.toFixed(4)},{" "}
+                        {location.latitude.toFixed(4)}
+                      </Td>
+                      <Td>{location.count}</Td>
+                    </Tr>
+                  )
+                )}
               </Tbody>
             </Table>
           </Box>

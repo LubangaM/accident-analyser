@@ -116,8 +116,7 @@ export function AccidentList() {
               <Td>
                 <Button
                   as={RouterLink}
-                  to={`/accidents/$id/edit`}
-                  params={{ id: accident.id.toString() }}
+                  to="/accidents/$id/edit"
                   size="sm"
                   mr={2}
                 >

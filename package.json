@@ -1,13 +1,12 @@
 {
-  "name": "accident-analyser",
+  "name": "@lubangam/accident-analyser",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter \"@accident-analyser/*\" dev",
-    "build": "pnpm --filter \"@accident-analyser/*\" build",
-    "start": "pnpm --filter \"@accident-analyser/backend\" start",
-    "test": "pnpm --filter \"@accident-analyser/*\" test",
-    "lint": "pnpm --filter \"@accident-analyser/*\" lint"
+    "start": "pnpm --filter @lubangam/accident-analyser-frontend start",
+    "build": "pnpm --filter @lubangam/accident-analyser-frontend build",
+    "test": "pnpm --filter @lubangam/accident-analyser-frontend test",
+    "lint": "pnpm --filter @lubangam/accident-analyser-frontend lint"
   },
   "devDependencies": {
     "typescript": "^5.3.3"

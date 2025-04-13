@@ -35,6 +35,15 @@ const accidentFormRoute = createRoute({
   component: AccidentForm,
 });
 
+const accidentEditRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/accidents/$id/edit",
+  component: AccidentForm,
+  validateSearch: (search: Record<string, unknown>) => ({
+    id: search.id as string,
+  }),
+});
+
 const analyticsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/analytics",
@@ -50,6 +59,7 @@ const uploadRoute = createRoute({
 const routeTree = rootRoute.addChildren([
   indexRoute,
   accidentFormRoute,
+  accidentEditRoute,
   analyticsRoute,
   uploadRoute,
 ]);
