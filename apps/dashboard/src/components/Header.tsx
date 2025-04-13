@@ -49,7 +49,7 @@ export function Header() {
 
         <Flex gap={4} align="center">
           <Link
-            href="https://github.com/yourusername/accident-analyser"
+            href="https://github.com/lubangam/accident-analyser"
             isExternal
             display="flex"
             alignItems="center"

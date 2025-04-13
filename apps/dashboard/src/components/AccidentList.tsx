@@ -26,6 +26,7 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
+  VStack,
 } from "@chakra-ui/react";
 import { useAccidents, useDeleteAccident } from "../hooks/useAccidents";
 import { useState, useMemo } from "react";
@@ -180,7 +181,7 @@ export function AccidentList() {
             <Tr>
               <Th cursor="pointer" onClick={() => handleSort("date")}>
                 <Flex align="center" gap={2}>
-                  Date
+                  Date & Location
                   {sortField === "date" ? (
                     sortOrder === "asc" ? (
                       <FaSortUp />
@@ -206,7 +207,6 @@ export function AccidentList() {
                   )}
                 </Flex>
               </Th>
-              <Th>Location</Th>
               <Th cursor="pointer" onClick={() => handleSort("vehicles")}>
                 <Flex align="center" gap={2}>
                   Vehicles
@@ -246,24 +246,30 @@ export function AccidentList() {
                 key={accident.id}
                 _hover={{ bg: useColorModeValue("gray.50", "gray.700") }}
               >
-                <Td>{format(new Date(accident.date), "MMM d, yyyy")}</Td>
-                <Td>{getSeverityBadge(accident.accident_severity)}</Td>
                 <Td>
-                  {accident.longitude && accident.latitude ? (
-                    <Text fontSize="sm">
-                      {accident.longitude.toFixed(4)},{" "}
-                      {accident.latitude.toFixed(4)}
+                  <VStack align="start" spacing={1}>
+                    <Text fontWeight="medium">
+                      {format(new Date(accident.date), "MMM d, yyyy")}
                     </Text>
-                  ) : (
-                    "N/A"
-                  )}
+                    {accident.longitude && accident.latitude ? (
+                      <Text fontSize="sm" color="gray.500">
+                        {accident.longitude.toFixed(4)},{" "}
+                        {accident.latitude.toFixed(4)}
+                      </Text>
+                    ) : (
+                      <Text fontSize="sm" color="gray.500">
+                        Location not available
+                      </Text>
+                    )}
+                  </VStack>
                 </Td>
+                <Td>{getSeverityBadge(accident.accident_severity)}</Td>
                 <Td>{accident.number_of_vehicles || "N/A"}</Td>
                 <Td>{accident.number_of_casualties || "N/A"}</Td>
                 <Td>{accident.road_type || "N/A"}</Td>
                 <Td>{accident.weather_conditions || "N/A"}</Td>
-                <Td>
-                  <HStack spacing={2} justify="center">
+                <Td width="120px">
+                  <HStack spacing={3} justify="flex-end">
                     <Tooltip label="Edit">
                       <IconButton
                         as={RouterLink}
