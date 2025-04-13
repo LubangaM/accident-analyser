@@ -77,23 +77,25 @@ A comprehensive full-stack application for managing and analyzing road accident 
 
 ```
 accident-analyser/
+├── pnpm-workspace.yaml    # Workspace configuration
+├── package.json          # Root package.json
 ├── apps/
-│   ├── dashboard/           # React frontend
+│   ├── dashboard/        # React frontend
 │   │   ├── src/
 │   │   │   ├── components/  # Reusable UI components
 │   │   │   ├── contexts/    # React contexts
 │   │   │   ├── routes/      # Application routes
 │   │   │   └── types/       # TypeScript definitions
 │   │   └── public/          # Static assets
-│   └── backend/             # FastAPI backend
-│       ├── routers/         # API endpoints
-│       ├── services/        # Business logic
-│       ├── models.py        # Database models
-│       └── schemas.py       # Data schemas
-├── docs/                    # Documentation
-│   ├── images/             # Documentation images
+│   └── backend/          # FastAPI backend
+│       ├── routers/      # API endpoints
+│       ├── services/     # Business logic
+│       ├── models.py     # Database models
+│       └── schemas.py    # Data schemas
+├── docs/                 # Documentation
+│   ├── images/          # Documentation images
 │   └── SYSTEM_DOCUMENTATION.md
-└── docker-compose.yml      # Docker configuration
+└── docker-compose.yml   # Docker configuration
 ```
 
 ## Getting Started
@@ -101,6 +103,7 @@ accident-analyser/
 ### Prerequisites
 
 - Node.js 18.0.0 or higher
+- pnpm 8.0.0 or higher
 - Python 3.11 or higher
 - PostgreSQL 15.0 or higher
 - Docker (optional)
@@ -128,9 +131,15 @@ python init_db.py
 3. **Frontend Setup**
 
 ```bash
+# Install pnpm if not already installed
+npm install -g pnpm
+
+# Install dependencies using pnpm workspaces
+pnpm install
+
+# Configure environment variables
 cd apps/dashboard
-npm install
-cp .env.example .env     # Configure your environment variables
+cp .env.example .env
 ```
 
 ### Running the Application
@@ -142,9 +151,8 @@ cp .env.example .env     # Configure your environment variables
 cd apps/backend
 uvicorn main:app --reload
 
-# Frontend
-cd apps/dashboard
-npm run dev
+# Frontend (from project root)
+pnpm --filter dashboard dev
 ```
 
 #### Using Docker

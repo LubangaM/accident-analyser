@@ -616,19 +616,88 @@ For future development and enhancement of the Accident Analysis Platform, the fo
 #### A.1 System Requirements
 
 - Node.js 18.0.0 or higher
+- pnpm 8.0.0 or higher
 - Python 3.11 or higher
 - PostgreSQL 15.0 or higher
-- Docker 24.0.0 or higher
-- 4GB RAM minimum
-- 10GB disk space
+- Docker (optional)
 
 #### A.2 Installation Steps
 
-1. Clone the repository
-2. Set up the database
-3. Configure environment variables
-4. Install dependencies
-5. Run the application
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/lubangam/accident-analyser.git
+cd accident-analyser
+```
+
+2. **Backend Setup**
+
+```bash
+cd apps/backend
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env     # Configure your environment variables
+python init_db.py
+```
+
+3. **Frontend Setup**
+
+```bash
+# Install pnpm if not already installed
+npm install -g pnpm
+
+# Install dependencies using pnpm workspaces
+pnpm install
+
+# Configure environment variables
+cd apps/dashboard
+cp .env.example .env
+```
+
+### Running the Application
+
+#### Development Mode
+
+```bash
+# Backend
+cd apps/backend
+uvicorn main:app --reload
+
+# Frontend (from project root)
+pnpm --filter dashboard dev
+```
+
+#### Using Docker
+
+```bash
+docker-compose up
+```
+
+### Project Structure
+
+```
+accident-analyser/
+├── pnpm-workspace.yaml    # Workspace configuration
+├── package.json          # Root package.json
+├── apps/
+│   ├── dashboard/        # React frontend
+│   │   ├── src/
+│   │   │   ├── components/  # Reusable UI components
+│   │   │   ├── contexts/    # React contexts
+│   │   │   ├── routes/      # Application routes
+│   │   │   └── types/       # TypeScript definitions
+│   │   └── public/          # Static assets
+│   └── backend/          # FastAPI backend
+│       ├── routers/      # API endpoints
+│       ├── services/     # Business logic
+│       ├── models.py     # Database models
+│       └── schemas.py    # Data schemas
+├── docs/                 # Documentation
+│   ├── images/          # Documentation images
+│   └── SYSTEM_DOCUMENTATION.md
+└── docker-compose.yml   # Docker configuration
+```
 
 ### Appendix B: User Manual
 
