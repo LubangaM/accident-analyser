@@ -1,12 +1,9 @@
 {
-  "name": "@lubangam/accident-analyser",
+  "name": "@accident-analyser/root",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "pnpm --filter @lubangam/accident-analyser-frontend start",
-    "build": "pnpm --filter @lubangam/accident-analyser-frontend build",
-    "test": "pnpm --filter @lubangam/accident-analyser-frontend test",
-    "lint": "pnpm --filter @lubangam/accident-analyser-frontend lint"
+    "dashboard": "pnpm --filter @accident-analyser/dashboard dev"
   },
   "devDependencies": {
     "typescript": "^5.3.3"
