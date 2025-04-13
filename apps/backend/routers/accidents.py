@@ -1,5 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
+import pandas as pd
+import io
 from typing import List
 from models import Accident
 from schemas import (
@@ -9,10 +11,37 @@ from schemas import (
 )
 from database import get_db
 
-router = APIRouter()
+router = APIRouter(prefix="/accidents")
 
 
-@router.get("/accidents", response_model=List[AccidentSchema])
+@router.post("/upload")
+async def upload_accidents(
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+):
+    # Read the uploaded CSV file
+    content = await file.read()
+    df = pd.read_csv(io.StringIO(content.decode("utf-8")))
+
+    # Create accidents from the CSV data
+    accidents = []
+
+    for index, row in df.iterrows():
+        accident = Accident(
+            id=row["id"],
+            date=row["date"],
+            time=row["time"],
+            location=row["location"],
+        )
+
+        accidents.append(accident)
+
+    db.add_all(accidents)
+    db.commit()
+    return {"message": "Accidents uploaded successfully"}
+
+
+@router.get("/", response_model=List[AccidentSchema])
 def get_accidents(
     skip: int = 0,
     limit: int = 100,
@@ -24,7 +53,7 @@ def get_accidents(
     return accidents
 
 
-@router.get("/accidents/{accident_id}", response_model=AccidentSchema)
+@router.get("/{accident_id}", response_model=AccidentSchema)
 def get_accident(
     accident_id: int,
     db: Session = Depends(
@@ -37,7 +66,7 @@ def get_accident(
     return accident
 
 
-@router.post("/accidents", response_model=AccidentSchema)
+@router.post("/", response_model=AccidentSchema)
 def create_accident(
     accident: AccidentCreate,
     db: Session = Depends(
@@ -51,7 +80,7 @@ def create_accident(
     return db_accident
 
 
-@router.put("/accidents/{accident_id}", response_model=AccidentSchema)
+@router.put("/{accident_id}", response_model=AccidentSchema)
 def update_accident(
     accident_id: int,
     accident: AccidentUpdate,
@@ -71,7 +100,7 @@ def update_accident(
     return db_accident
 
 
-@router.delete("/accidents/{accident_id}")
+@router.delete("/{accident_id}")
 def delete_accident(
     accident_id: int,
     db: Session = Depends(

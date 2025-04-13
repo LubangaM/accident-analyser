@@ -12,11 +12,11 @@ import io
 from database import get_db
 from services.upload import process_csv_file
 
-router = APIRouter()
+router = APIRouter(prefix="/accidents")
 
 
-@router.post("/upload-csv")
-async def upload_csv(
+@router.post("/upload")
+async def upload_accidents(
     background_tasks: BackgroundTasks,
     file: UploadFile,
     db: Session = Depends(get_db),
@@ -47,7 +47,7 @@ async def upload_csv(
         if missing_columns:
             raise HTTPException(
                 status_code=400,
-                detail=f"Missing required columns: {', '.join(missing_columns,)}",
+                detail=f"Missing required columns: {', '.join(missing_columns)}",
             )
 
         # Process the CSV file in the background

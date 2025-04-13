@@ -17,6 +17,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as AccidentsIndexImport } from './routes/accidents/index'
 import { Route as AuthSignupImport } from './routes/auth/signup'
 import { Route as AuthLoginImport } from './routes/auth/login'
+import { Route as AccidentsUploadImport } from './routes/accidents/upload'
 import { Route as AccidentsNewImport } from './routes/accidents/new'
 import { Route as AccidentsAccidentIdEditImport } from './routes/accidents/$accidentId/edit'
 
@@ -55,6 +56,12 @@ const AuthSignupRoute = AuthSignupImport.update({
 const AuthLoginRoute = AuthLoginImport.update({
   id: '/auth/login',
   path: '/auth/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AccidentsUploadRoute = AccidentsUploadImport.update({
+  id: '/accidents/upload',
+  path: '/accidents/upload',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -102,6 +109,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccidentsNewImport
       parentRoute: typeof rootRoute
     }
+    '/accidents/upload': {
+      id: '/accidents/upload'
+      path: '/accidents/upload'
+      fullPath: '/accidents/upload'
+      preLoaderRoute: typeof AccidentsUploadImport
+      parentRoute: typeof rootRoute
+    }
     '/auth/login': {
       id: '/auth/login'
       path: '/auth/login'
@@ -140,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/analytics': typeof AnalyticsRoute
   '/profile': typeof ProfileRoute
   '/accidents/new': typeof AccidentsNewRoute
+  '/accidents/upload': typeof AccidentsUploadRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/accidents': typeof AccidentsIndexRoute
@@ -151,6 +166,7 @@ export interface FileRoutesByTo {
   '/analytics': typeof AnalyticsRoute
   '/profile': typeof ProfileRoute
   '/accidents/new': typeof AccidentsNewRoute
+  '/accidents/upload': typeof AccidentsUploadRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/accidents': typeof AccidentsIndexRoute
@@ -163,6 +179,7 @@ export interface FileRoutesById {
   '/analytics': typeof AnalyticsRoute
   '/profile': typeof ProfileRoute
   '/accidents/new': typeof AccidentsNewRoute
+  '/accidents/upload': typeof AccidentsUploadRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/accidents/': typeof AccidentsIndexRoute
@@ -176,6 +193,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/profile'
     | '/accidents/new'
+    | '/accidents/upload'
     | '/auth/login'
     | '/auth/signup'
     | '/accidents'
@@ -186,6 +204,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/profile'
     | '/accidents/new'
+    | '/accidents/upload'
     | '/auth/login'
     | '/auth/signup'
     | '/accidents'
@@ -196,6 +215,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/profile'
     | '/accidents/new'
+    | '/accidents/upload'
     | '/auth/login'
     | '/auth/signup'
     | '/accidents/'
@@ -208,6 +228,7 @@ export interface RootRouteChildren {
   AnalyticsRoute: typeof AnalyticsRoute
   ProfileRoute: typeof ProfileRoute
   AccidentsNewRoute: typeof AccidentsNewRoute
+  AccidentsUploadRoute: typeof AccidentsUploadRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSignupRoute: typeof AuthSignupRoute
   AccidentsIndexRoute: typeof AccidentsIndexRoute
@@ -219,6 +240,7 @@ const rootRouteChildren: RootRouteChildren = {
   AnalyticsRoute: AnalyticsRoute,
   ProfileRoute: ProfileRoute,
   AccidentsNewRoute: AccidentsNewRoute,
+  AccidentsUploadRoute: AccidentsUploadRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,
   AccidentsIndexRoute: AccidentsIndexRoute,
@@ -239,6 +261,7 @@ export const routeTree = rootRoute
         "/analytics",
         "/profile",
         "/accidents/new",
+        "/accidents/upload",
         "/auth/login",
         "/auth/signup",
         "/accidents/",
@@ -256,6 +279,9 @@ export const routeTree = rootRoute
     },
     "/accidents/new": {
       "filePath": "accidents/new.tsx"
+    },
+    "/accidents/upload": {
+      "filePath": "accidents/upload.tsx"
     },
     "/auth/login": {
       "filePath": "auth/login.tsx"

@@ -18,7 +18,7 @@ from schemas import (
 )
 from config import get_settings
 
-router = APIRouter()
+router = APIRouter(prefix="/auth")
 
 settings = get_settings()
 

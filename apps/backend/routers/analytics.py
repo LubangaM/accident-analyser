@@ -13,7 +13,7 @@ from schemas import (
 )
 from database import get_db
 
-router = APIRouter()
+router = APIRouter(prefix="/analytics")
 
 
 @router.get("/summary", response_model=AnalyticsSummary)

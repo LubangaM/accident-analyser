@@ -56,6 +56,12 @@ export function Header() {
               <RouterLink to="/accidents/new" className="[&.active]:font-bold">
                 New Accident
               </RouterLink>
+              <RouterLink
+                to="/accidents/upload"
+                className="[&.active]:font-bold"
+              >
+                Upload CSV
+              </RouterLink>
             </>
           ) : null}
         </Flex>

@@ -1,12 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import accidents, analytics, auth
+from api import upload
 from init_db import init_db
 from config import get_settings
 
 settings = get_settings()
 
-app = FastAPI(title="Accident Analyser API")
+app = FastAPI(title="Accident Analysis API")
 
 # Initialize database
 init_db()
@@ -15,10 +16,7 @@ init_db()
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:5173",
-    ],  # React vite frontend
+    allow_origins=["*"],  # In production, replace with specific origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,13 +26,17 @@ app.add_middleware(
 app.include_router(
     accidents.router,
     prefix="/api/v1",
-    tags=[
-        "accidents",
-    ],
+    tags=["accidents"],
+)
+
+app.include_router(
+    upload.router,
+    prefix="/api/v1",
+    tags=["upload"],
 )
 app.include_router(
     analytics.router,
-    prefix="/api/v1/analytics",
+    prefix="/api/v1",
     tags=[
         "analytics",
     ],
@@ -42,7 +44,7 @@ app.include_router(
 
 app.include_router(
     auth.router,
-    prefix="/api/v1/auth",
+    prefix="/api/v1",
     tags=[
         "auth",
     ],
@@ -51,4 +53,4 @@ app.include_router(
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to Accident Analyser API"}
+    return {"message": "Welcome to the Accident Analysis API"}

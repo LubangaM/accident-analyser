@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 import pandas as pd
-from database import Accident
+from models import Accident
 from typing import Dict, Any
 
 
@@ -19,7 +19,7 @@ def process_csv_file(df: pd.DataFrame, db: Session) -> Dict[str, Any]:
     # Process in batches of 1000
     batch_size = 1000
     for i in range(0, len(df), batch_size):
-        batch = df.iloc[i : i + batch_size]
+        batch = df.iloc[i:i + batch_size]
         accidents_to_create = []
 
         for _, row in batch.iterrows():
