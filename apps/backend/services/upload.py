@@ -1,9 +1,7 @@
 from sqlalchemy.orm import Session
 import pandas as pd
-from datetime import datetime
-from ..models.accident import Accident
-from ..schemas.accident import AccidentCreate
-from typing import List, Dict, Any
+from database import Accident
+from typing import Dict, Any
 
 
 def process_csv_file(df: pd.DataFrame, db: Session) -> Dict[str, Any]:
@@ -11,7 +9,12 @@ def process_csv_file(df: pd.DataFrame, db: Session) -> Dict[str, Any]:
     Process the CSV file and insert records into the database.
     Returns a summary of the operation.
     """
-    results = {"total_rows": len(df), "successful": 0, "failed": 0, "errors": []}
+    results = {
+        "total_rows": len(df),
+        "successful": 0,
+        "failed": 0,
+        "errors": [],
+    }
 
     # Process in batches of 1000
     batch_size = 1000
@@ -38,7 +41,7 @@ def process_csv_file(df: pd.DataFrame, db: Session) -> Dict[str, Any]:
                 }
 
                 # Validate the data
-                accident = AccidentCreate(**accident_data)
+                accident = Accident(**accident_data)
                 accidents_to_create.append(accident)
                 results["successful"] += 1
 

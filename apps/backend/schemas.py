@@ -1,10 +1,9 @@
-from pydantic import BaseModel
-from datetime import date, time
-from typing import Optional, List, Dict
+from pydantic import BaseModel, field_validator, field_serializer
+from typing import Optional, List
+from datetime import time
 
 
 class AccidentBase(BaseModel):
-    accident_index: str
     location_easting: Optional[float] = None
     location_northing: Optional[float] = None
     longitude: Optional[float] = None
@@ -13,9 +12,9 @@ class AccidentBase(BaseModel):
     accident_severity: str
     number_of_vehicles: Optional[int] = None
     number_of_casualties: Optional[int] = None
-    date: date
+    date: str
     day_of_week: Optional[int] = None
-    time: Optional[time] = None
+    time: Optional[str] = None
     local_authority_district: Optional[str] = None
     local_authority_highway: Optional[str] = None
     first_road_class: Optional[str] = None
@@ -37,19 +36,37 @@ class AccidentBase(BaseModel):
     lsoa_of_accident_location: Optional[str] = None
     year: Optional[int] = None
 
+    @field_validator("time")
+    def validate_time(cls, v):
+        if v is None or v == "":
+            return None
+        if isinstance(v, str):
+            try:
+                return time.fromisoformat(v)
+            except ValueError:
+                return None
+        return v
+
+    @field_serializer("time")
+    def serialize_time(self, time_value: Optional[str], _info):
+        if time_value is None:
+            return None
+        return time_value
+
 
 class AccidentCreate(AccidentBase):
-    pass
+    time: Optional[str] = None
 
 
 class AccidentUpdate(AccidentBase):
-    accident_index: Optional[str] = None
     accident_severity: Optional[str] = None
-    date: Optional[date] = None
+    date: Optional[str] = None
+    time: Optional[str] = None
 
 
 class Accident(AccidentBase):
     id: int
+    time: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -89,8 +106,8 @@ class LocationStats(BaseModel):
 
 
 class DateRangeFilter(BaseModel):
-    start_date: Optional[date] = None
-    end_date: Optional[date] = None
+    start_date: Optional[str] = None
+    end_date: Optional[str] = None
 
 
 class AnalyticsResponse(BaseModel):

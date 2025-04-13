@@ -12,7 +12,6 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as AnalyticsImport } from './routes/analytics'
-import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as AccidentsNewImport } from './routes/accidents.new'
 import { Route as AccidentsIdEditImport } from './routes/accidents.$id.edit'
@@ -22,12 +21,6 @@ import { Route as AccidentsIdEditImport } from './routes/accidents.$id.edit'
 const AnalyticsRoute = AnalyticsImport.update({
   id: '/analytics',
   path: '/analytics',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,13 +53,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
-      parentRoute: typeof rootRoute
-    }
     '/analytics': {
       id: '/analytics'
       path: '/analytics'
@@ -95,7 +81,6 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/analytics': typeof AnalyticsRoute
   '/accidents/new': typeof AccidentsNewRoute
   '/accidents/$id/edit': typeof AccidentsIdEditRoute
@@ -103,7 +88,6 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/analytics': typeof AnalyticsRoute
   '/accidents/new': typeof AccidentsNewRoute
   '/accidents/$id/edit': typeof AccidentsIdEditRoute
@@ -112,7 +96,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/analytics': typeof AnalyticsRoute
   '/accidents/new': typeof AccidentsNewRoute
   '/accidents/$id/edit': typeof AccidentsIdEditRoute
@@ -120,27 +103,15 @@ export interface FileRoutesById {
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/about'
-    | '/analytics'
-    | '/accidents/new'
-    | '/accidents/$id/edit'
+  fullPaths: '/' | '/analytics' | '/accidents/new' | '/accidents/$id/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/analytics' | '/accidents/new' | '/accidents/$id/edit'
-  id:
-    | '__root__'
-    | '/'
-    | '/about'
-    | '/analytics'
-    | '/accidents/new'
-    | '/accidents/$id/edit'
+  to: '/' | '/analytics' | '/accidents/new' | '/accidents/$id/edit'
+  id: '__root__' | '/' | '/analytics' | '/accidents/new' | '/accidents/$id/edit'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
   AnalyticsRoute: typeof AnalyticsRoute
   AccidentsNewRoute: typeof AccidentsNewRoute
   AccidentsIdEditRoute: typeof AccidentsIdEditRoute
@@ -148,7 +119,6 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
   AnalyticsRoute: AnalyticsRoute,
   AccidentsNewRoute: AccidentsNewRoute,
   AccidentsIdEditRoute: AccidentsIdEditRoute,
@@ -165,7 +135,6 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about",
         "/analytics",
         "/accidents/new",
         "/accidents/$id/edit"
@@ -173,9 +142,6 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/about": {
-      "filePath": "about.tsx"
     },
     "/analytics": {
       "filePath": "analytics.tsx"

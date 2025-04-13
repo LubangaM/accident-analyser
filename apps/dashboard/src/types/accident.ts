@@ -1,6 +1,5 @@
 export interface Accident {
   id: number;
-  accident_index: string;
   location_easting?: number;
   location_northing?: number;
   longitude?: number;

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, Time, Float
+from sqlalchemy import Column, Integer, String, Float
 from database import Base
 
 
@@ -6,7 +6,6 @@ class Accident(Base):
     __tablename__ = "accidents"
 
     id = Column(Integer, primary_key=True, index=True)
-    accident_index = Column(String, unique=True, nullable=False)
     location_easting = Column(Float)
     location_northing = Column(Float)
     longitude = Column(Float)
@@ -15,9 +14,9 @@ class Accident(Base):
     accident_severity = Column(String, nullable=False)
     number_of_vehicles = Column(Integer)
     number_of_casualties = Column(Integer)
-    date = Column(Date, nullable=False)
+    date = Column(String, nullable=False)
     day_of_week = Column(Integer)
-    time = Column(Time)
+    time = Column(String, nullable=True)
     local_authority_district = Column(String)
     local_authority_highway = Column(String)
     first_road_class = Column(String)

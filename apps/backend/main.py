@@ -1,11 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import accidents, analytics
-
+from init_db import init_db
 from functools import lru_cache
 from config import Settings
 
 app = FastAPI(title="Accident Analyser API")
+
+# Initialize database
+init_db()
 
 
 @lru_cache

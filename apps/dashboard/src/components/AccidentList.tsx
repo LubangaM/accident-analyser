@@ -95,7 +95,7 @@ export function AccidentList() {
           {filteredAccidents?.map((accident) => (
             <Tr key={accident.id}>
               <Td>{new Date(accident.date).toLocaleDateString()}</Td>
-              <Td>{accident.accident_index}</Td>
+              <Td>{accident.id}</Td>
               <Td>
                 {accident.accident_severity === "1"
                   ? "Fatal"

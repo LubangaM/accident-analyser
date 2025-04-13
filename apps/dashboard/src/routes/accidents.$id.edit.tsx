@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useParams } from "@tanstack/react-router";
 import { AccidentForm } from "../components/AccidentForm";
 
 export const Route = createFileRoute("/accidents/$id/edit")({
@@ -6,5 +6,6 @@ export const Route = createFileRoute("/accidents/$id/edit")({
 });
 
 function EditAccident() {
-  return <AccidentForm />;
+  const { id } = useParams({ from: "/accidents/$id/edit" });
+  return <AccidentForm id={parseInt(id)} />;
 }
