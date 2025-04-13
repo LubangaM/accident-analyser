@@ -54,7 +54,17 @@ The system addresses the critical need for better analysis and understanding of 
 
 ## LIST OF FIGURES
 
-[To be populated as documentation progresses]
+1. **Figure 1.1**: System Architecture Diagram
+2. **Figure 2.1**: Landing Page
+3. **Figure 2.2**: User Registration Interface
+4. **Figure 2.3**: User Login Interface
+5. **Figure 2.4**: User Profile Settings
+6. **Figure 2.5**: Analytics Dashboard
+7. **Figure 2.6**: CSV Upload Interface
+8. **Figure 2.7**: CSV Template Download
+9. **Figure 2.8**: Accidents List View
+10. **Figure 2.9**: New Accident Form
+11. **Figure 2.10**: Edit Accident Form
 
 ## LIST OF TABLES
 
@@ -154,7 +164,9 @@ This chapter presents the design and modeling aspects of the Accident Analysis P
 
 #### 2.2.1 High-Level Architecture
 
-The system follows a three-tier architecture:
+![System Architecture Diagram](docs/images/system-architecture.png)
+
+The system follows a three-tier architecture as illustrated in Figure 1.1:
 
 1. **Presentation Layer (Frontend)**
 
@@ -231,13 +243,113 @@ CREATE TABLE accidents (
 
 ### 2.4 User Interface Models
 
-#### 2.4.1 Wireframes
+#### 2.4.1 Landing Page
 
-[Detailed wireframes for each major interface component]
+![Landing Page](docs/images/landing-page.png)
 
-#### 2.4.2 User Flow Diagrams
+The landing page (Figure 2.1) features:
 
-[Flow diagrams showing user navigation paths]
+- Clear value proposition
+- Call-to-action buttons
+- Key feature highlights
+- Professional design with gradient text
+- Author attribution
+
+#### 2.4.2 Authentication Interfaces
+
+![User Registration Interface](docs/images/registration.png)
+
+The registration interface (Figure 2.2) includes:
+
+- Full name input
+- Email validation
+- Password strength requirements
+- Confirm password validation
+- Clear error messaging
+
+![User Login Interface](docs/images/login.png)
+
+The login interface (Figure 2.3) provides:
+
+- Email and password inputs
+- Password visibility toggle
+- Remember me option
+- Forgot password link
+- Sign up redirect
+
+#### 2.4.3 User Profile
+
+![User Profile Settings](docs/images/profile.png)
+
+The profile settings page (Figure 2.4) allows:
+
+- Name update
+- Profile picture
+- Account management
+- Clear visual hierarchy
+
+#### 2.4.4 Analytics Dashboard
+
+![Analytics Dashboard](docs/images/analytics.png)
+
+The analytics dashboard (Figure 2.5) displays:
+
+- Key metrics overview
+- Interactive charts
+- Time range filtering
+- Data visualization options
+- Real-time updates
+
+#### 2.4.5 Data Management
+
+![CSV Upload Interface](docs/images/csv-upload.png)
+
+The CSV upload interface (Figure 2.6) features:
+
+- Drag-and-drop functionality
+- File size limits
+- Format requirements
+- Preview capability
+- Validation feedback
+
+![CSV Template Download](docs/images/csv-template.png)
+
+The CSV template modal (Figure 2.7) provides:
+
+- Column specifications
+- Example data
+- Download option
+- Clear formatting guidelines
+
+#### 2.4.6 Accident Management
+
+![Accidents List View](docs/images/accidents-list.png)
+
+The accidents list view (Figure 2.8) includes:
+
+- Sortable columns
+- Severity indicators
+- Action buttons
+- Pagination
+- Filter options
+
+![New Accident Form](docs/images/new-accident.png)
+
+The new accident form (Figure 2.9) contains:
+
+- Step-by-step input
+- Required field validation
+- Help text
+- Clear section organization
+
+![Edit Accident Form](docs/images/edit-accident.png)
+
+The edit accident form (Figure 2.10) provides:
+
+- Pre-filled data
+- Validation rules
+- Severity warnings
+- Save/cancel options
 
 ### 2.5 API Design
 
