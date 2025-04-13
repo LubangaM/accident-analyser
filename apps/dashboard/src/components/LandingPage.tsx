@@ -9,6 +9,7 @@ import {
   Icon,
   useColorModeValue,
   Flex,
+  Divider,
 } from "@chakra-ui/react";
 import { useNavigate } from "@tanstack/react-router";
 import { FaChartLine, FaMapMarkedAlt, FaShieldAlt } from "react-icons/fa";
@@ -93,6 +94,14 @@ export function LandingPage() {
                 </VStack>
               ))}
             </SimpleGrid>
+
+            {/* Author Signature */}
+            <Box w="full" textAlign="center" mt={8}>
+              <Divider mb={4} />
+              <Text fontSize="sm" color={textColor} fontStyle="italic">
+                Authored by Dennis Lubanga
+              </Text>
+            </Box>
           </VStack>
         </Container>
       </Box>
