@@ -8,9 +8,11 @@ import {
 } from "@chakra-ui/react";
 import { Link as RouterLink, useNavigate } from "@tanstack/react-router";
 import { FaGithub } from "react-icons/fa";
+import { useAuth } from "../contexts/AuthContext";
 
 export function Header() {
   const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth();
   const bgColor = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.200", "gray.700");
 
@@ -36,15 +38,19 @@ export function Header() {
           <RouterLink to="/" className="[&.active]:font-bold">
             Home
           </RouterLink>
-          <RouterLink to="/accidents" className="[&.active]:font-bold">
-            Accidents
-          </RouterLink>
-          <RouterLink to="/analytics" className="[&.active]:font-bold">
-            Analytics
-          </RouterLink>
-          <RouterLink to="/accidents/new" className="[&.active]:font-bold">
-            New Accident
-          </RouterLink>
+          {isAuthenticated ? (
+            <>
+              <RouterLink to="/accidents" className="[&.active]:font-bold">
+                Accidents
+              </RouterLink>
+              <RouterLink to="/analytics" className="[&.active]:font-bold">
+                Analytics
+              </RouterLink>
+              <RouterLink to="/accidents/new" className="[&.active]:font-bold">
+                New Accident
+              </RouterLink>
+            </>
+          ) : null}
         </Flex>
 
         <Flex gap={4} align="center">
@@ -58,20 +64,28 @@ export function Header() {
             <Icon as={FaGithub} />
             GitHub
           </Link>
-          <Button
-            size="sm"
-            colorScheme="blue"
-            onClick={() => navigate({ to: "/auth/login" })}
-          >
-            Login
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => navigate({ to: "/auth/signup" })}
-          >
-            Sign Up
-          </Button>
+          {isAuthenticated ? (
+            <Button size="sm" variant="outline" onClick={logout}>
+              Logout
+            </Button>
+          ) : (
+            <>
+              <Button
+                size="sm"
+                colorScheme="blue"
+                onClick={() => navigate({ to: "/auth/login" })}
+              >
+                Login
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => navigate({ to: "/auth/signup" })}
+              >
+                Sign Up
+              </Button>
+            </>
+          )}
         </Flex>
       </Flex>
     </Box>

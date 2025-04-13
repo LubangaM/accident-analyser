@@ -8,5 +8,3 @@ export const Route = createFileRoute("/")({
 function Index() {
   return <LandingPage />;
 }
-
-export const routes = [Route];

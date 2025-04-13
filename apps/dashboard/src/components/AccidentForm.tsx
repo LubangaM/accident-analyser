@@ -47,14 +47,14 @@ import { ChevronRightIcon, InfoIcon } from "@chakra-ui/icons";
 import { format } from "date-fns";
 
 export interface AccidentFormProps {
-  id?: number;
+  accidentId?: number | string;
 }
 
 type StepFields = {
   [key: number]: (keyof AccidentCreate)[];
 };
 
-export function AccidentForm({ id }: AccidentFormProps) {
+export function AccidentForm({ accidentId }: AccidentFormProps) {
   const navigate = useNavigate();
   const toast = useToast();
   const bgColor = useColorModeValue("white", "gray.800");
@@ -78,8 +78,11 @@ export function AccidentForm({ id }: AccidentFormProps) {
 
   const onSubmit = async (data: AccidentCreate) => {
     try {
-      if (id) {
-        await updateAccident.mutateAsync({ id: Number(id), ...data });
+      if (accidentId) {
+        await updateAccident.mutateAsync({
+          id: Number(accidentId),
+          ...data,
+        });
         toast({
           title: "Accident updated successfully",
           status: "success",
@@ -193,14 +196,16 @@ export function AccidentForm({ id }: AccidentFormProps) {
           </BreadcrumbItem>
           <BreadcrumbItem isCurrentPage>
             <BreadcrumbLink>
-              {id ? "Edit Accident" : "New Accident"}
+              {accidentId ? "Edit Accident" : "New Accident"}
             </BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
 
-        <Heading size="lg">{id ? "Edit Accident" : "New Accident"}</Heading>
+        <Heading size="lg">
+          {accidentId ? "Edit Accident" : "New Accident"}
+        </Heading>
         <Text color="gray.600">
-          {id
+          {accidentId
             ? "Update the accident details below"
             : "Fill in the accident details below"}
         </Text>
@@ -563,10 +568,10 @@ export function AccidentForm({ id }: AccidentFormProps) {
                   onClick={handleSubmitClick}
                   colorScheme="blue"
                   isLoading={isSubmitting}
-                  loadingText={id ? "Updating..." : "Creating..."}
+                  loadingText={accidentId ? "Updating..." : "Creating..."}
                   leftIcon={isSubmitting ? <Spinner size="sm" /> : undefined}
                 >
-                  {id ? "Update Accident" : "Create Accident"}
+                  {accidentId ? "Update Accident" : "Create Accident"}
                 </Button>
               )}
             </Box>
