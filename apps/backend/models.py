@@ -1,5 +1,5 @@
-from sqlalchemy import Column, Integer, String, Date, Time, Float, ForeignKey
-from .database import Base
+from sqlalchemy import Column, Integer, String, Date, Time, Float
+from database import Base
 
 
 class Accident(Base):
