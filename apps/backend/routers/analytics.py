@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func, desc
 from sqlalchemy.orm import Session
 from typing import List, Optional
@@ -51,6 +51,15 @@ def get_accidents_by_severity(
     end_date: Optional[date] = None,
     db: Session = Depends(get_db),
 ):
+    # First, get the total count with date filters
+    total_query = db.query(func.count(Accident.id))
+    if start_date:
+        total_query = total_query.filter(Accident.date >= start_date)
+    if end_date:
+        total_query = total_query.filter(Accident.date <= end_date)
+    total = total_query.scalar() or 1
+
+    # Then get the grouped data
     query = db.query(
         Accident.accident_severity, func.count(Accident.id).label("count")
     ).group_by(Accident.accident_severity)
@@ -60,7 +69,6 @@ def get_accidents_by_severity(
     if end_date:
         query = query.filter(Accident.date <= end_date)
 
-    total = query.with_entities(func.count(Accident.id)).scalar() or 1
     results = query.all()
 
     return [
@@ -79,6 +87,15 @@ def get_accidents_by_road_type(
     end_date: Optional[date] = None,
     db: Session = Depends(get_db),
 ):
+    # First, get the total count with date filters
+    total_query = db.query(func.count(Accident.id))
+    if start_date:
+        total_query = total_query.filter(Accident.date >= start_date)
+    if end_date:
+        total_query = total_query.filter(Accident.date <= end_date)
+    total = total_query.scalar() or 1
+
+    # Then get the grouped data
     query = db.query(
         Accident.road_type, func.count(Accident.id).label("count")
     ).group_by(Accident.road_type)
@@ -88,7 +105,6 @@ def get_accidents_by_road_type(
     if end_date:
         query = query.filter(Accident.date <= end_date)
 
-    total = query.with_entities(func.count(Accident.id)).scalar() or 1
     results = query.all()
 
     return [
@@ -105,27 +121,46 @@ def get_accidents_by_weather(
     end_date: Optional[date] = None,
     db: Session = Depends(get_db),
 ):
-    query = db.query(
-        Accident.weather_conditions,
-        func.count(Accident.id).label("count"),
-    ).group_by(Accident.weather_conditions)
+    try:
+        # First, get the total count with date filters
+        total_query = db.query(func.count(Accident.id))
+        if start_date:
+            total_query = total_query.filter(Accident.date >= start_date)
+        if end_date:
+            total_query = total_query.filter(Accident.date <= end_date)
+        total = total_query.scalar() or 1
 
-    if start_date:
-        query = query.filter(Accident.date >= start_date)
-    if end_date:
-        query = query.filter(Accident.date <= end_date)
-
-    total = query.with_entities(func.count(Accident.id)).scalar() or 1
-    results = query.all()
-
-    return [
-        WeatherStats(
-            weather_condition=weather_condition,
-            count=count,
-            percentage=(count / total) * 100,
+        # Then get the grouped data
+        query = (
+            db.query(
+                Accident.weather_conditions,
+                func.count(Accident.id).label("count"),
+                func.round(func.count(Accident.id) * 100.0 / total, 2).label(
+                    "percentage"
+                ),
+            )
+            .group_by(Accident.weather_conditions)
+            .order_by(func.count(Accident.id).desc())
         )
-        for weather_condition, count in results
-    ]
+
+        if start_date:
+            query = query.filter(Accident.date >= start_date)
+        if end_date:
+            query = query.filter(Accident.date <= end_date)
+
+        results = query.all()
+
+        return [
+            WeatherStats(
+                weather_condition=row.weather_conditions,
+                count=row.count,
+                percentage=row.percentage,
+            )
+            for row in results
+        ]
+    except Exception as e:
+        error_msg = "Error retrieving weather statistics"
+        raise HTTPException(status_code=500, detail=f"{error_msg}: {str(e)}")
 
 
 @router.get("/top-locations", response_model=List[LocationStats])
