@@ -27,11 +27,27 @@ import {
   AlertTitle,
   AlertDescription,
   VStack,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  ModalFooter,
 } from "@chakra-ui/react";
 import { useAccidents, useDeleteAccident } from "../hooks/useAccidents";
 import { useState, useMemo } from "react";
-import { FaEdit, FaTrash, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
+import {
+  FaEdit,
+  FaTrash,
+  FaSort,
+  FaSortUp,
+  FaSortDown,
+  FaUpload,
+} from "react-icons/fa";
 import { format } from "date-fns";
+import { CsvUploadForm } from "./CsvUploadForm";
 
 type SortField = "date" | "severity" | "vehicles" | "casualties";
 type SortOrder = "asc" | "desc";
@@ -40,6 +56,7 @@ export function AccidentList() {
   const { data: accidents, isLoading, error } = useAccidents();
   const deleteAccident = useDeleteAccident();
   const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedSeverity, setSelectedSeverity] = useState<string>("all");
   const [sortField, setSortField] = useState<SortField>("date");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
@@ -164,6 +181,15 @@ export function AccidentList() {
             <option value="2">Serious</option>
             <option value="3">Slight</option>
           </Select>
+          <Button
+            as={RouterLink}
+            to="/accidents/upload"
+            leftIcon={<FaUpload />}
+            colorScheme="green"
+            variant="outline"
+          >
+            Upload CSV
+          </Button>
           <Button as={RouterLink} to="/accidents/new" colorScheme="blue">
             Add Accident
           </Button>
@@ -314,6 +340,17 @@ export function AccidentList() {
           ))}
         </Flex>
       )}
+
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Upload Accidents CSV</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <CsvUploadForm onUploadComplete={onClose} />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 }

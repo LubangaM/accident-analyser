@@ -24,13 +24,35 @@ import {
   Input,
   FormHelperText,
   FormErrorMessage,
+  Card,
+  CardHeader,
+  CardBody,
+  HStack,
+  Icon,
+  Tooltip,
+  Badge,
+  Flex,
+  Spacer,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  ModalFooter,
+  Code,
 } from "@chakra-ui/react";
 import { useNavigate } from "@tanstack/react-router";
 import Papa from "papaparse";
+import { FiUpload, FiInfo, FiCheck, FiDownload } from "react-icons/fi";
+import { motion } from "framer-motion";
 
 interface CsvUploadFormProps {
   onUploadComplete?: () => void;
 }
+
+const MotionBox = motion(Box);
 
 export function CsvUploadForm({ onUploadComplete }: CsvUploadFormProps) {
   const [file, setFile] = useState<File | null>(null);
@@ -39,10 +61,26 @@ export function CsvUploadForm({ onUploadComplete }: CsvUploadFormProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const toast = useToast();
   const navigate = useNavigate();
-  const bgColor = useColorModeValue("white", "gray.800");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const borderColor = useColorModeValue("gray.200", "gray.700");
+  const cardBg = useColorModeValue("white", "gray.700");
+
+  const requiredColumns = [
+    "date",
+    "longitude",
+    "latitude",
+    "accident_severity",
+    "number_of_vehicles",
+    "number_of_casualties",
+    "road_type",
+    "speed_limit",
+    "weather_conditions",
+    "light_conditions",
+  ];
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -55,6 +93,7 @@ export function CsvUploadForm({ onUploadComplete }: CsvUploadFormProps) {
 
     setFile(selectedFile);
     setError(null);
+    setValidationErrors([]);
 
     // Preview the CSV file
     Papa.parse(selectedFile, {
@@ -62,8 +101,22 @@ export function CsvUploadForm({ onUploadComplete }: CsvUploadFormProps) {
       preview: 5,
       complete: (results) => {
         if (results.data.length > 0) {
-          setHeaders(Object.keys(results.data[0] as Record<string, unknown>));
+          const fileHeaders = Object.keys(
+            results.data[0] as Record<string, unknown>
+          );
+          setHeaders(fileHeaders);
           setPreviewData(results.data as Record<string, unknown>[]);
+
+          // Validate required columns
+          const missingColumns = requiredColumns.filter(
+            (col) => !fileHeaders.includes(col)
+          );
+
+          if (missingColumns.length > 0) {
+            setValidationErrors([
+              `Missing required columns: ${missingColumns.join(", ")}`,
+            ]);
+          }
         }
       },
       error: (error) => {
@@ -124,82 +177,173 @@ export function CsvUploadForm({ onUploadComplete }: CsvUploadFormProps) {
     }
   };
 
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) {
+      const event = {
+        target: { files: [droppedFile] },
+      } as unknown as React.ChangeEvent<HTMLInputElement>;
+      handleFileChange(event);
+    }
+  };
+
   return (
     <Container maxW="container.xl" py={8}>
-      <VStack spacing={6} align="stretch">
-        <Heading size="lg">Upload Accidents CSV</Heading>
+      <VStack spacing={8} align="stretch">
+        <Flex align="center">
+          <Heading>Upload Accidents CSV</Heading>
+          <Spacer />
+          <Button leftIcon={<FiDownload />} variant="outline" onClick={onOpen}>
+            Download Template
+          </Button>
+        </Flex>
 
-        <Box
-          bg={bgColor}
-          p={6}
-          borderRadius="lg"
-          boxShadow="sm"
-          borderWidth="1px"
-          borderColor={borderColor}
-        >
-          <FormControl isInvalid={!!error}>
-            <FormLabel>CSV File</FormLabel>
-            <Input
-              type="file"
-              accept=".csv"
-              onChange={handleFileChange}
-              disabled={isUploading}
-            />
-            <FormHelperText>
-              Upload a CSV file containing accident data. The file should
-              include columns for date, location, severity, and other relevant
-              information.
-            </FormHelperText>
-            <FormErrorMessage>{error}</FormErrorMessage>
-          </FormControl>
+        <Card bg={cardBg} borderWidth="1px" borderColor={borderColor}>
+          <CardHeader>
+            <HStack spacing={4}>
+              <Icon as={FiUpload} boxSize={6} color="blue.500" />
+              <Box>
+                <Heading size="md">Upload CSV File</Heading>
+                <Text color="gray.500">
+                  Drag and drop your CSV file or click to browse
+                </Text>
+              </Box>
+            </HStack>
+          </CardHeader>
+          <CardBody>
+            <MotionBox
+              border="2px dashed"
+              borderColor={error ? "red.300" : "gray.300"}
+              borderRadius="lg"
+              p={8}
+              textAlign="center"
+              cursor="pointer"
+              _hover={{ borderColor: "blue.300" }}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+            >
+              <FormControl isInvalid={!!error}>
+                <Input
+                  type="file"
+                  accept=".csv"
+                  onChange={handleFileChange}
+                  disabled={isUploading}
+                  display="none"
+                  id="file-upload"
+                />
+                <FormLabel htmlFor="file-upload" cursor="pointer">
+                  {file ? (
+                    <VStack spacing={2}>
+                      <HStack>
+                        <Icon as={FiCheck} color="green.500" />
+                        <Text fontWeight="medium">{file.name}</Text>
+                      </HStack>
+                      <Text fontSize="sm" color="gray.500">
+                        Click to change file
+                      </Text>
+                    </VStack>
+                  ) : (
+                    <VStack spacing={2}>
+                      <Text>Select or drag and drop your CSV file</Text>
+                      <Text fontSize="sm" color="gray.500">
+                        Maximum file size: 10MB
+                      </Text>
+                    </VStack>
+                  )}
+                </FormLabel>
+                <FormHelperText>
+                  Your CSV file should include all required columns
+                </FormHelperText>
+                <FormErrorMessage>{error}</FormErrorMessage>
+              </FormControl>
+            </MotionBox>
 
-          {isUploading && (
-            <Box mt={4}>
-              <Progress value={uploadProgress} size="sm" colorScheme="blue" />
-              <Text mt={2} textAlign="center">
-                Uploading...
-              </Text>
-            </Box>
-          )}
+            {validationErrors.length > 0 && (
+              <Alert status="error" mt={4}>
+                <AlertIcon />
+                <Box>
+                  <AlertTitle>Validation Errors</AlertTitle>
+                  <AlertDescription>
+                    {validationErrors.map((error, index) => (
+                      <Text key={index}>{error}</Text>
+                    ))}
+                  </AlertDescription>
+                </Box>
+              </Alert>
+            )}
 
-          {previewData.length > 0 && (
-            <Box mt={6}>
-              <Text fontWeight="bold" mb={2}>
-                Preview (First 5 rows):
-              </Text>
-              <Box overflowX="auto">
-                <Table variant="simple">
-                  <Thead>
-                    <Tr>
-                      {headers.map((header) => (
-                        <Th key={header}>{header}</Th>
-                      ))}
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {previewData.map((row, index) => (
-                      <Tr key={index}>
+            {isUploading && (
+              <Box mt={4}>
+                <Progress value={uploadProgress} size="sm" colorScheme="blue" />
+                <Text mt={2} textAlign="center">
+                  Uploading...
+                </Text>
+              </Box>
+            )}
+
+            {previewData.length > 0 && (
+              <Box mt={6}>
+                <HStack spacing={2} mb={4}>
+                  <Text fontWeight="bold">Preview (First 5 rows)</Text>
+                  <Tooltip label="This is how your data will be imported">
+                    <Icon as={FiInfo} color="gray.500" />
+                  </Tooltip>
+                </HStack>
+                <Box overflowX="auto">
+                  <Table variant="simple">
+                    <Thead>
+                      <Tr>
                         {headers.map((header) => (
-                          <Td key={header}>{row[header] as string}</Td>
+                          <Th key={header}>
+                            <HStack>
+                              <Text>{header}</Text>
+                              {requiredColumns.includes(header) && (
+                                <Badge colorScheme="blue" fontSize="xs">
+                                  Required
+                                </Badge>
+                              )}
+                            </HStack>
+                          </Th>
                         ))}
                       </Tr>
-                    ))}
-                  </Tbody>
-                </Table>
+                    </Thead>
+                    <Tbody>
+                      {previewData.map((row, index) => (
+                        <Tr key={index}>
+                          {headers.map((header) => (
+                            <Td key={header}>{row[header] as string}</Td>
+                          ))}
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </Box>
               </Box>
-            </Box>
-          )}
+            )}
 
-          <Button
-            mt={6}
-            colorScheme="blue"
-            onClick={handleUpload}
-            isLoading={isUploading}
-            isDisabled={!file || !!error}
-          >
-            Upload CSV
-          </Button>
-        </Box>
+            <Button
+              mt={6}
+              colorScheme="blue"
+              onClick={handleUpload}
+              isLoading={isUploading}
+              isDisabled={!file || !!error || validationErrors.length > 0}
+              leftIcon={<FiUpload />}
+              width="full"
+            >
+              Upload CSV
+            </Button>
+          </CardBody>
+        </Card>
 
         <Alert status="info" variant="subtle">
           <AlertIcon />
@@ -230,6 +374,51 @@ export function CsvUploadForm({ onUploadComplete }: CsvUploadFormProps) {
           </Box>
         </Alert>
       </VStack>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent maxW="800px">
+          <ModalHeader>Download CSV Template</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text mb={4}>
+              Download this template to ensure your CSV file has the correct
+              format:
+            </Text>
+            <Box overflowX="auto" p={2} bg="gray.50" borderRadius="md">
+              <Code display="block" whiteSpace="pre-wrap" p={2}>
+                date,longitude,latitude,accident_severity,number_of_vehicles,number_of_casualties,road_type,speed_limit,weather_conditions,light_conditions
+                2024-01-01,-0.1276,51.5074,2,2,1,Single carriageway,30,Fine
+                without high winds,Daylight: Street light present
+              </Code>
+            </Box>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="ghost" mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button
+              colorScheme="blue"
+              onClick={() => {
+                const template = `date,longitude,latitude,accident_severity,number_of_vehicles,number_of_casualties,road_type,speed_limit,weather_conditions,light_conditions
+2024-01-01,-0.1276,51.5074,2,2,1,Single carriageway,30,Fine without high winds,Daylight: Street light present`;
+                const blob = new Blob([template], { type: "text/csv" });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "accidents_template.csv";
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                onClose();
+              }}
+            >
+              Download Template
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 }
