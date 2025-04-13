@@ -1,220 +1,211 @@
 # Accident Analyser
 
-A full-stack application for managing and analyzing accident records. The system provides comprehensive analytics and visualization of accident data, helping identify patterns and trends in road safety.
+A comprehensive full-stack application for managing and analyzing road accident data. Built with modern web technologies, this system provides powerful analytics and visualization tools to help identify patterns and trends in road safety.
+
+![Analytics Dashboard](docs/images/analytics.png)
 
 ## Features
 
-- **Accident Management**
+### Data Management
 
+- **Accident Records**
   - Create, view, update, and delete accident records
-  - Detailed form for capturing accident information
-  - List view with filtering and sorting capabilities
-  - Upload CSV file to import accident data
-  - Download CSV file to export accident data
+  - Intuitive form interface with validation
+  - Bulk data import via CSV upload
+  - Data export functionality
+  - Comprehensive filtering and sorting
 
-- **Analytics Dashboard**
-  - Real-time statistical summaries
-  - Visual data representation through charts and graphs
-  - Analysis by severity, road type, and weather conditions
-  - Geographic hotspot identification
-  - Time-based filtering (Last year, 2 years, 5 years)
+### Analytics & Visualization
+
+- **Real-time Dashboard**
+  - Key metrics overview (total accidents, casualties, vehicles)
+  - Interactive charts and graphs
+  - Time-based analysis with flexible ranges
+  - Geographic distribution analysis
+
+### User Interface
+
+- **Modern Design**
+  - Clean, responsive interface using Chakra UI
+  - Dark/light mode support
+  - Intuitive navigation
+  - Mobile-friendly layout
+
+### Security
+
+- **User Authentication**
+  - Secure login and registration
+  - JWT-based authentication
+  - Role-based access control
+  - Profile management
+
+## Technology Stack
+
+### Frontend
+
+- **Core**
+
+  - React 18.2.0
+  - TypeScript 5.0.0
+  - Vite 4.4.0
+
+- **UI & Routing**
+  - Chakra UI 2.8.0
+  - TanStack Router 1.0.0
+  - Recharts 2.8.0
+
+### Backend
+
+- **Core**
+
+  - Python 3.11
+  - FastAPI 0.104.0
+  - PostgreSQL 15.0
+
+- **Data & Auth**
+  - SQLAlchemy 2.0.0
+  - Pydantic 2.4.0
+  - JWT Authentication
+
+### DevOps
+
+- Docker & Docker Compose
+- Nginx
+- GitHub Actions
 
 ## Project Structure
 
 ```
-.
+accident-analyser/
 ├── apps/
-│   ├── frontend/     # React frontend with Chakra UI
+│   ├── dashboard/           # React frontend
 │   │   ├── src/
 │   │   │   ├── components/  # Reusable UI components
-│   │   │   ├── pages/       # Main application pages
-│   │   │   ├── hooks/       # Custom React hooks
-│   │   │   ├── api/         # API client and utilities
-│   │   │   └── types/       # TypeScript type definitions
-│   └── backend/      # FastAPI backend with PostgreSQL
-│       ├── api/      # API endpoints and routing
-│       ├── routers/  # Routers for API endpoints
-│       ├── models/   # Database models
-│       └── services/ # Business logic and data processing
-├── packages/
-│   └── shared/       # Shared types and utilities
-│       ├── src/
-│       │   ├── types/       # Shared TypeScript types
-│       │   └── utils/       # Shared utility functions
-│       └── package.json
-├── package.json      # Root package.json
-├── pnpm-workspace.yaml
-└── docker-compose.yml
+│   │   │   ├── contexts/    # React contexts
+│   │   │   ├── routes/      # Application routes
+│   │   │   └── types/       # TypeScript definitions
+│   │   └── public/          # Static assets
+│   └── backend/             # FastAPI backend
+│       ├── routers/         # API endpoints
+│       ├── services/        # Business logic
+│       ├── models.py        # Database models
+│       └── schemas.py       # Data schemas
+├── docs/                    # Documentation
+│   ├── images/             # Documentation images
+│   └── SYSTEM_DOCUMENTATION.md
+└── docker-compose.yml      # Docker configuration
 ```
 
-## Prerequisites
+## Getting Started
 
-- Node.js 20+
-- pnpm 8+
-- Python 3.11+
-- PostgreSQL
-- Docker and Docker Compose (optional)
+### Prerequisites
 
-## Development Setup
+- Node.js 18.0.0 or higher
+- Python 3.11 or higher
+- PostgreSQL 15.0 or higher
+- Docker (optional)
 
-### Option 1: Using Docker Compose (Recommended)
+### Installation
 
-1. Clone the repository:
+1. **Clone the repository**
 
 ```bash
 git clone https://github.com/lubangam/accident-analyser.git
 cd accident-analyser
 ```
 
-2. Install dependencies:
-
-```bash
-pnpm install
-```
-
-3. Start all services:
-
-```bash
-docker compose up
-```
-
-4. Access the applications:
-
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8000
-- API Documentation: http://localhost:8000/docs
-
-### Option 2: Manual Setup
-
-#### Backend Setup
-
-1. Navigate to the backend directory:
+2. **Backend Setup**
 
 ```bash
 cd apps/backend
-```
-
-2. Create and activate a virtual environment:
-
-```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-
-```bash
 pip install -r requirements.txt
-```
-
-4. Set up environment variables:
-
-```bash
-cp .env.example .env
-# Edit .env with your database credentials
-```
-
-5. Initialize the database:
-
-```bash
+cp .env.example .env     # Configure your environment variables
 python init_db.py
 ```
 
-6. Start the server:
+3. **Frontend Setup**
 
 ```bash
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+cd apps/dashboard
+npm install
+cp .env.example .env     # Configure your environment variables
 ```
 
-#### Frontend Setup
+### Running the Application
 
-1. Navigate to the frontend directory:
+#### Development Mode
 
 ```bash
-cd apps/frontend
+# Backend
+cd apps/backend
+uvicorn main:app --reload
+
+# Frontend
+cd apps/dashboard
+npm run dev
 ```
 
-2. Install dependencies:
+#### Using Docker
 
 ```bash
-pnpm install
+docker-compose up
 ```
 
-3. Set up environment variables:
+## API Documentation
 
-```bash
-cp .env.example .env
-# Edit .env with your API endpoint
-```
+### Authentication
 
-4. Start the development server:
-
-```bash
-pnpm dev
-```
-
-## Available Scripts
-
-In the project root directory, you can run:
-
-- `pnpm dev` - Start all applications in development mode
-- `pnpm build` - Build all applications
-- `pnpm start` - Start the backend server
-- `pnpm test` - Run tests for all applications
-- `pnpm lint` - Run linting for all applications
-
-## API Endpoints
+- `POST /api/v1/auth/signup` - Register new user
+- `POST /api/v1/auth/login` - User login
+- `GET /api/v1/auth/me` - Get current user
 
 ### Accidents
 
-- `GET /accidents` - List all accidents
-- `GET /accidents/{id}` - Get a specific accident
-- `POST /accidents` - Create a new accident
-- `PUT or PATCH /accidents/{id}` - Update an accident
-- `DELETE /accidents/{id}` - Delete an accident
-- `POST /accidents/upload` - Upload a CSV file to import accident data
-- `GET /accidents/export` - Download a CSV file to export accident data
+- `GET /api/v1/accidents` - List accidents
+- `POST /api/v1/accidents` - Create accident
+- `GET /api/v1/accidents/{id}` - Get accident
+- `PUT /api/v1/accidents/{id}` - Update accident
+- `DELETE /api/v1/accidents/{id}` - Delete accident
+- `POST /api/v1/accidents/upload` - Upload CSV
+- `GET /api/v1/accidents/template` - Download CSV template
 
 ### Analytics
 
-- `GET /analytics/summary` - Get overall statistics
-- `GET /analytics/by-severity` - Get accident distribution by severity
-- `GET /analytics/by-road-type` - Get accident distribution by road type
-- `GET /analytics/by-weather` - Get accident distribution by weather condition
-- `GET /analytics/top-locations` - Get accident hotspots
-- `GET /analytics/by-time` - Get accident distribution by time
+- `GET /api/v1/analytics/summary` - Get overview
+- `GET /api/v1/analytics/severity` - Severity distribution
+- `GET /api/v1/analytics/road-type` - Road type distribution
+- `GET /api/v1/analytics/weather` - Weather conditions
 
-## Technologies Used
+## Documentation
 
-- **Frontend**
+Comprehensive system documentation is available in [SYSTEM_DOCUMENTATION.md](docs/SYSTEM_DOCUMENTATION.md), including:
 
-  - React
-  - TypeScript
-  - Chakra UI
-  - TanStack Query (React Query)
-  - TanStack Router
-  - Recharts for data visualization
-
-- **Backend**
-
-  - FastAPI
-  - PostgreSQL
-  - SQLAlchemy
-  - Pydantic
-
-- **Development Tools**
-  - pnpm (Package Manager)
-  - TypeScript
-  - Docker & Docker Compose
+- System architecture
+- Database design
+- API specifications
+- User interface guidelines
+- Deployment procedures
 
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Author
+
+**Dennis Lubanga**
+
+## Acknowledgments
+
+- Road safety advocates and traffic management authorities
+- Open-source community and contributors
+- Modern web development tools and frameworks

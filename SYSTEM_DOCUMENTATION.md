@@ -357,32 +357,32 @@ The edit accident form (Figure 2.10) provides:
 
 ```python
 # Authentication endpoints
-POST /api/auth/register
-POST /api/auth/login
-POST /api/auth/logout
-GET /api/auth/me
+POST /api/v1/auth/register
+POST /api/v1/auth/login
+POST /api/v1/auth/logout
+GET /api/v1/auth/me
 ```
 
 #### 2.5.2 Accident Data API
 
 ```python
 # Accident endpoints
-GET /api/accidents
-POST /api/accidents/upload
-GET /api/accidents/{id}
-PUT /api/accidents/{id}
-DELETE /api/accidents/{id}
+GET /api/v1/accidents
+POST /api/v1/accidents/upload
+GET /api/v1/accidents/{id}
+PUT /api/v1/accidents/{id}
+DELETE /api/v1/accidents/{id}
 ```
 
 #### 2.5.3 Analytics API
 
 ```python
 # Analytics endpoints
-GET /api/analytics/summary
-GET /api/analytics/severity
-GET /api/analytics/road-type
-GET /api/analytics/weather
-GET /api/analytics/location
+GET /api/v1/analytics/summary
+GET /api/v1/analytics/severity
+GET /api/v1/analytics/road-type
+GET /api/v1/analytics/weather
+GET /api/v1/analytics/location
 ```
 
 ### 2.6 Security Design
@@ -646,17 +646,95 @@ For future development and enhancement of the Accident Analysis Platform, the fo
 
 ### Appendix C: API Documentation
 
-#### C.1 Authentication API
+#### Authentication Endpoints
 
-[Detailed API endpoints and parameters]
+#### Register User
 
-#### C.2 Data API
+- **URL**: `/api/v1/auth/register`
+- **Method**: `POST`
+- **Description**: Register a new user account
 
-[Detailed API endpoints and parameters]
+#### Login
 
-#### C.3 Analytics API
+- **URL**: `/api/v1/auth/login`
+- **Method**: `POST`
+- **Description**: Authenticate user and get access token
 
-[Detailed API endpoints and parameters]
+#### Logout
+
+- **URL**: `/api/v1/auth/logout`
+- **Method**: `POST`
+- **Description**: Invalidate user's access token
+
+#### Get Current User
+
+- **URL**: `/api/v1/auth/me`
+- **Method**: `GET`
+- **Description**: Get currently authenticated user's details
+
+### Accident Endpoints
+
+#### Get All Accidents
+
+- **URL**: `/api/v1/accidents`
+- **Method**: `GET`
+- **Description**: Get paginated list of all accidents
+
+#### Upload Accidents CSV
+
+- **URL**: `/api/v1/accidents/upload`
+- **Method**: `POST`
+- **Description**: Upload CSV file containing accident records
+
+#### Get Single Accident
+
+- **URL**: `/api/v1/accidents/{id}`
+- **Method**: `GET`
+- **Description**: Get details of a specific accident
+
+#### Update Accident
+
+- **URL**: `/api/v1/accidents/{id}`
+- **Method**: `PUT`
+- **Description**: Update an existing accident record
+
+#### Delete Accident
+
+- **URL**: `/api/v1/accidents/{id}`
+- **Method**: `DELETE`
+- **Description**: Delete an accident record
+
+### Analytics Endpoints
+
+#### Get Summary Statistics
+
+- **URL**: `/api/v1/analytics/summary`
+- **Method**: `GET`
+- **Description**: Get overall accident statistics
+
+#### Get Severity Analysis
+
+- **URL**: `/api/v1/analytics/severity`
+- **Method**: `GET`
+- **Description**: Get accident breakdown by severity
+
+#### Get Road Type Analysis
+
+- **URL**: `/api/v1/analytics/road-type`
+- **Method**: `GET`
+- **Description**: Get accident breakdown by road type
+
+#### Get Weather Analysis
+
+- **URL**: `/api/v1/analytics/weather`
+- **Method**: `GET`
+- **Description**: Get accident breakdown by weather conditions
+
+#### Get Location Analysis
+
+- **URL**: `/api/v1/analytics/location`
+- **Method**: `GET`
+- **Description**: Get accident breakdown by location
 
 ### Appendix D: Source Code
 
