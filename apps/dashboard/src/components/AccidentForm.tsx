@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "@tanstack/react-router";
 import {
   Box,
@@ -39,9 +40,14 @@ import {
   StepStatus,
   StepTitle,
   useSteps,
+  Center,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { useCreateAccident, useUpdateAccident } from "../hooks/useAccidents";
+import {
+  useCreateAccident,
+  useUpdateAccident,
+  useAccident,
+} from "../hooks/useAccidents";
 import { AccidentCreate } from "../types/accident";
 import { ChevronRightIcon, InfoIcon } from "@chakra-ui/icons";
 import { format } from "date-fns";
@@ -60,11 +66,16 @@ export function AccidentForm({ accidentId }: AccidentFormProps) {
   const bgColor = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.200", "gray.700");
 
+  const { data: existingAccident, isLoading: isLoadingAccident } = useAccident(
+    accidentId ? Number(accidentId) : 0
+  );
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     watch,
+    reset,
   } = useForm<AccidentCreate>({
     defaultValues: {
       number_of_vehicles: 1,
@@ -72,6 +83,16 @@ export function AccidentForm({ accidentId }: AccidentFormProps) {
       speed_limit: 30,
     },
   });
+
+  // Reset form with existing accident data when it's loaded
+  React.useEffect(() => {
+    if (existingAccident) {
+      reset({
+        ...existingAccident,
+        date: format(new Date(existingAccident.date), "yyyy-MM-dd"),
+      });
+    }
+  }, [existingAccident, reset]);
 
   const createAccident = useCreateAccident();
   const updateAccident = useUpdateAccident();
@@ -181,6 +202,16 @@ export function AccidentForm({ accidentId }: AccidentFormProps) {
 
     handleSubmit(onSubmit)();
   };
+
+  if (isLoadingAccident && accidentId) {
+    return (
+      <Container maxW="container.xl" py={8}>
+        <Center>
+          <Spinner size="xl" />
+        </Center>
+      </Container>
+    );
+  }
 
   return (
     <Container maxW="container.xl" py={8}>

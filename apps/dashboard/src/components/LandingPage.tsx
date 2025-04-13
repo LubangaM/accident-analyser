@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "@tanstack/react-router";
 import { FaChartLine, FaMapMarkedAlt, FaShieldAlt } from "react-icons/fa";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 export function LandingPage() {
   const navigate = useNavigate();
@@ -39,60 +40,62 @@ export function LandingPage() {
   ];
 
   return (
-    <Box bg={bgColor} minH="100vh">
-      <Container maxW="container.xl" py={20}>
-        <VStack spacing={16} align="center">
-          {/* Hero Section */}
-          <VStack spacing={6} textAlign="center" maxW="3xl">
-            <Heading
-              as="h1"
-              size="2xl"
-              bgGradient="linear(to-r, blue.400, blue.600)"
-              bgClip="text"
-            >
-              Accident Analysis Platform
-            </Heading>
-            <Text fontSize="xl" color={textColor}>
-              Analyze, visualize, and understand road accident data to improve
-              safety and prevent future incidents.
-            </Text>
-            <Flex gap={4}>
-              <Button
-                size="lg"
-                colorScheme="blue"
-                onClick={() => navigate({ to: "/auth/login" })}
+    <ProtectedRoute requireAuth={false}>
+      <Box bg={bgColor} minH="100vh">
+        <Container maxW="container.xl" py={20}>
+          <VStack spacing={16} align="center">
+            {/* Hero Section */}
+            <VStack spacing={6} textAlign="center" maxW="3xl">
+              <Heading
+                as="h1"
+                size="2xl"
+                bgGradient="linear(to-r, blue.400, blue.600)"
+                bgClip="text"
               >
-                Get Started
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => navigate({ to: "/auth/signup" })}
-              >
-                Sign Up
-              </Button>
-            </Flex>
-          </VStack>
+                Accident Analysis Platform
+              </Heading>
+              <Text fontSize="xl" color={textColor}>
+                Analyze, visualize, and understand road accident data to improve
+                safety and prevent future incidents.
+              </Text>
+              <Flex gap={4}>
+                <Button
+                  size="lg"
+                  colorScheme="blue"
+                  onClick={() => navigate({ to: "/auth/login" })}
+                >
+                  Get Started
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={() => navigate({ to: "/auth/signup" })}
+                >
+                  Sign Up
+                </Button>
+              </Flex>
+            </VStack>
 
-          {/* Features Section */}
-          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} w="full">
-            {features.map((feature, index) => (
-              <VStack
-                key={index}
-                p={6}
-                bg={featureBgColor}
-                borderRadius="lg"
-                spacing={4}
-                align="start"
-              >
-                <Icon as={feature.icon} w={8} h={8} color="blue.500" />
-                <Heading size="md">{feature.title}</Heading>
-                <Text color={textColor}>{feature.description}</Text>
-              </VStack>
-            ))}
-          </SimpleGrid>
-        </VStack>
-      </Container>
-    </Box>
+            {/* Features Section */}
+            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} w="full">
+              {features.map((feature, index) => (
+                <VStack
+                  key={index}
+                  p={6}
+                  bg={featureBgColor}
+                  borderRadius="lg"
+                  spacing={4}
+                  align="start"
+                >
+                  <Icon as={feature.icon} w={8} h={8} color="blue.500" />
+                  <Heading size="md">{feature.title}</Heading>
+                  <Text color={textColor}>{feature.description}</Text>
+                </VStack>
+              ))}
+            </SimpleGrid>
+          </VStack>
+        </Container>
+      </Box>
+    </ProtectedRoute>
   );
 }
