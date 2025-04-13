@@ -34,6 +34,6 @@ export interface Accident {
   year?: number;
 }
 
-export interface AccidentCreate extends Omit<Accident, "id"> {}
+export type AccidentCreate = Omit<Accident, "id">;
 
-export interface AccidentUpdate extends Partial<AccidentCreate> {}
+export type AccidentUpdate = Partial<AccidentCreate>;
