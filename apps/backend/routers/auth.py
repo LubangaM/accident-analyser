@@ -9,7 +9,13 @@ from jose import JWTError, jwt
 
 from database import get_db
 from models import User
-from schemas import UserCreate, User as UserSchema, Token, TokenData
+from schemas import (
+    UserCreate,
+    User as UserSchema,
+    Token,
+    TokenData,
+    UserUpdate,
+)
 from config import get_settings
 
 router = APIRouter()
@@ -117,4 +123,21 @@ async def login(
 
 @router.get("/me", response_model=UserSchema)
 async def read_users_me(current_user: User = Depends(get_current_user)):
+    return current_user
+
+
+@router.patch("/me", response_model=UserSchema)
+async def update_user(
+    user_update: UserUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    # Update only the name field
+    current_user.name = user_update.name
+    current_user.updated_at = datetime.now(tz=timezone.utc)
+
+    db.add(current_user)
+    db.commit()
+    db.refresh(current_user)
+
     return current_user

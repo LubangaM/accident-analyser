@@ -11,6 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ProfileImport } from './routes/profile'
 import { Route as AnalyticsImport } from './routes/analytics'
 import { Route as IndexImport } from './routes/index'
 import { Route as AccidentsIndexImport } from './routes/accidents/index'
@@ -20,6 +21,12 @@ import { Route as AccidentsNewImport } from './routes/accidents/new'
 import { Route as AccidentsAccidentIdEditImport } from './routes/accidents/$accidentId/edit'
 
 // Create/Update Routes
+
+const ProfileRoute = ProfileImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AnalyticsRoute = AnalyticsImport.update({
   id: '/analytics',
@@ -81,6 +88,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnalyticsImport
       parentRoute: typeof rootRoute
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileImport
+      parentRoute: typeof rootRoute
+    }
     '/accidents/new': {
       id: '/accidents/new'
       path: '/accidents/new'
@@ -124,6 +138,7 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
+  '/profile': typeof ProfileRoute
   '/accidents/new': typeof AccidentsNewRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
@@ -134,6 +149,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
+  '/profile': typeof ProfileRoute
   '/accidents/new': typeof AccidentsNewRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
@@ -145,6 +161,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
+  '/profile': typeof ProfileRoute
   '/accidents/new': typeof AccidentsNewRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
@@ -157,6 +174,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/analytics'
+    | '/profile'
     | '/accidents/new'
     | '/auth/login'
     | '/auth/signup'
@@ -166,6 +184,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/analytics'
+    | '/profile'
     | '/accidents/new'
     | '/auth/login'
     | '/auth/signup'
@@ -175,6 +194,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/analytics'
+    | '/profile'
     | '/accidents/new'
     | '/auth/login'
     | '/auth/signup'
@@ -186,6 +206,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnalyticsRoute: typeof AnalyticsRoute
+  ProfileRoute: typeof ProfileRoute
   AccidentsNewRoute: typeof AccidentsNewRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSignupRoute: typeof AuthSignupRoute
@@ -196,6 +217,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnalyticsRoute: AnalyticsRoute,
+  ProfileRoute: ProfileRoute,
   AccidentsNewRoute: AccidentsNewRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,
@@ -215,6 +237,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/analytics",
+        "/profile",
         "/accidents/new",
         "/auth/login",
         "/auth/signup",
@@ -227,6 +250,9 @@ export const routeTree = rootRoute
     },
     "/analytics": {
       "filePath": "analytics.tsx"
+    },
+    "/profile": {
+      "filePath": "profile.tsx"
     },
     "/accidents/new": {
       "filePath": "accidents/new.tsx"

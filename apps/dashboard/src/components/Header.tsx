@@ -5,14 +5,21 @@ import {
   Button,
   useColorModeValue,
   Icon,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Avatar,
+  Text,
+  HStack,
 } from "@chakra-ui/react";
 import { Link as RouterLink, useNavigate } from "@tanstack/react-router";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaUser, FaCog, FaSignOutAlt } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
 
 export function Header() {
   const navigate = useNavigate();
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
   const bgColor = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.200", "gray.700");
 
@@ -65,9 +72,33 @@ export function Header() {
             GitHub
           </Link>
           {isAuthenticated ? (
-            <Button size="sm" variant="outline" onClick={logout}>
-              Logout
-            </Button>
+            <Menu>
+              <MenuButton
+                as={Button}
+                variant="ghost"
+                leftIcon={<Avatar size="sm" name={user?.name} />}
+                rightIcon={<Icon as={FaUser} />}
+              >
+                <HStack spacing={2}>
+                  <Text>{user?.name}</Text>
+                </HStack>
+              </MenuButton>
+              <MenuList>
+                <MenuItem
+                  icon={<Icon as={FaCog} />}
+                  onClick={() => navigate({ to: "/profile" })}
+                >
+                  Profile Settings
+                </MenuItem>
+                <MenuItem
+                  icon={<Icon as={FaSignOutAlt} />}
+                  onClick={logout}
+                  color="red.500"
+                >
+                  Logout
+                </MenuItem>
+              </MenuList>
+            </Menu>
           ) : (
             <>
               <Button
