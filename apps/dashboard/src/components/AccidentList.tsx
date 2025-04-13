@@ -118,7 +118,7 @@ export function AccidentList() {
                 <Button
                   as={RouterLink}
                   to="/accidents/$id/edit"
-                  // params={{ id: accident.id.toString() }}
+                  params={{ id: accident.id.toString() }}
                   size="sm"
                   mr={2}
                 >

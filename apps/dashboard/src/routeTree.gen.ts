@@ -13,8 +13,11 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as AnalyticsImport } from './routes/analytics'
 import { Route as IndexImport } from './routes/index'
-import { Route as AccidentsNewImport } from './routes/accidents.new'
-import { Route as AccidentsIdEditImport } from './routes/accidents.$id.edit'
+import { Route as AccidentsIndexImport } from './routes/accidents/index'
+import { Route as AuthSignupImport } from './routes/auth/signup'
+import { Route as AuthLoginImport } from './routes/auth/login'
+import { Route as AccidentsNewImport } from './routes/accidents/new'
+import { Route as AccidentsIdEditImport } from './routes/accidents/$id/edit'
 
 // Create/Update Routes
 
@@ -27,6 +30,24 @@ const AnalyticsRoute = AnalyticsImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AccidentsIndexRoute = AccidentsIndexImport.update({
+  id: '/accidents/',
+  path: '/accidents/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthSignupRoute = AuthSignupImport.update({
+  id: '/auth/signup',
+  path: '/auth/signup',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthLoginRoute = AuthLoginImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -67,6 +88,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccidentsNewImport
       parentRoute: typeof rootRoute
     }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth/signup': {
+      id: '/auth/signup'
+      path: '/auth/signup'
+      fullPath: '/auth/signup'
+      preLoaderRoute: typeof AuthSignupImport
+      parentRoute: typeof rootRoute
+    }
+    '/accidents/': {
+      id: '/accidents/'
+      path: '/accidents'
+      fullPath: '/accidents'
+      preLoaderRoute: typeof AccidentsIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/accidents/$id/edit': {
       id: '/accidents/$id/edit'
       path: '/accidents/$id/edit'
@@ -83,6 +125,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/accidents/new': typeof AccidentsNewRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
+  '/accidents': typeof AccidentsIndexRoute
   '/accidents/$id/edit': typeof AccidentsIdEditRoute
 }
 
@@ -90,6 +135,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/accidents/new': typeof AccidentsNewRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
+  '/accidents': typeof AccidentsIndexRoute
   '/accidents/$id/edit': typeof AccidentsIdEditRoute
 }
 
@@ -98,15 +146,40 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/accidents/new': typeof AccidentsNewRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
+  '/accidents/': typeof AccidentsIndexRoute
   '/accidents/$id/edit': typeof AccidentsIdEditRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/analytics' | '/accidents/new' | '/accidents/$id/edit'
+  fullPaths:
+    | '/'
+    | '/analytics'
+    | '/accidents/new'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/accidents'
+    | '/accidents/$id/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analytics' | '/accidents/new' | '/accidents/$id/edit'
-  id: '__root__' | '/' | '/analytics' | '/accidents/new' | '/accidents/$id/edit'
+  to:
+    | '/'
+    | '/analytics'
+    | '/accidents/new'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/accidents'
+    | '/accidents/$id/edit'
+  id:
+    | '__root__'
+    | '/'
+    | '/analytics'
+    | '/accidents/new'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/accidents/'
+    | '/accidents/$id/edit'
   fileRoutesById: FileRoutesById
 }
 
@@ -114,6 +187,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnalyticsRoute: typeof AnalyticsRoute
   AccidentsNewRoute: typeof AccidentsNewRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthSignupRoute: typeof AuthSignupRoute
+  AccidentsIndexRoute: typeof AccidentsIndexRoute
   AccidentsIdEditRoute: typeof AccidentsIdEditRoute
 }
 
@@ -121,6 +197,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnalyticsRoute: AnalyticsRoute,
   AccidentsNewRoute: AccidentsNewRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthSignupRoute: AuthSignupRoute,
+  AccidentsIndexRoute: AccidentsIndexRoute,
   AccidentsIdEditRoute: AccidentsIdEditRoute,
 }
 
@@ -137,6 +216,9 @@ export const routeTree = rootRoute
         "/",
         "/analytics",
         "/accidents/new",
+        "/auth/login",
+        "/auth/signup",
+        "/accidents/",
         "/accidents/$id/edit"
       ]
     },
@@ -147,10 +229,19 @@ export const routeTree = rootRoute
       "filePath": "analytics.tsx"
     },
     "/accidents/new": {
-      "filePath": "accidents.new.tsx"
+      "filePath": "accidents/new.tsx"
+    },
+    "/auth/login": {
+      "filePath": "auth/login.tsx"
+    },
+    "/auth/signup": {
+      "filePath": "auth/signup.tsx"
+    },
+    "/accidents/": {
+      "filePath": "accidents/index.tsx"
     },
     "/accidents/$id/edit": {
-      "filePath": "accidents.$id.edit.tsx"
+      "filePath": "accidents/$id/edit.tsx"
     }
   }
 }

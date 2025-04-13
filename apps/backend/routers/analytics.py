@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends
 from sqlalchemy import func, desc
 from sqlalchemy.orm import Session
 from typing import List, Optional
@@ -64,7 +64,11 @@ def get_accidents_by_severity(
     results = query.all()
 
     return [
-        SeverityStats(severity=severity, count=count, percentage=(count / total) * 100)
+        SeverityStats(
+            severity=severity,
+            count=count,
+            percentage=(count / total) * 100,
+        )
         for severity, count in results
     ]
 
@@ -116,9 +120,11 @@ def get_accidents_by_weather(
 
     return [
         WeatherStats(
-            weather_condition=weather, count=count, percentage=(count / total) * 100
+            weather_condition=weather_condition,
+            count=count,
+            percentage=(count / total) * 100,
         )
-        for weather, count in results
+        for weather_condition, count in results
     ]
 
 

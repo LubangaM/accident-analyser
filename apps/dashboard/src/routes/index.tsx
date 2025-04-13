@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AccidentList } from "../components/AccidentList";
+import { LandingPage } from "../components/LandingPage";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
 function Index() {
-  return <AccidentList />;
+  return <LandingPage />;
 }
 
 export const routes = [Route];

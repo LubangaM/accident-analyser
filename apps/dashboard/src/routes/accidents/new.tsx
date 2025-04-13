@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AccidentForm } from "../components/AccidentForm";
+import { AccidentForm } from "../../components/AccidentForm";
 
 export const Route = createFileRoute("/accidents/new")({
-  component: NewAccident,
+  component: RouteComponent,
 });
 
-function NewAccident() {
+function RouteComponent() {
   return <AccidentForm />;
 }
