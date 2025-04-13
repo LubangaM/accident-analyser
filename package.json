@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dashboard": "pnpm --filter @accident-analyser/dashboard dev"
+    "frontend": "pnpm --filter @accident-analyser/dashboard dev",
+    "backend": "cd apps/backend && source venv/bin/activate && python -m uvicorn main:app"
   },
   "devDependencies": {
     "typescript": "^5.3.3"
