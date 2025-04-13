@@ -44,7 +44,7 @@ export function SignupPage() {
         duration: 3000,
         isClosable: true,
       });
-      navigate({ to: "/analytics" });
+      navigate({ to: "/auth/login" });
     } catch (error) {
       console.error("Signup error:", error);
 

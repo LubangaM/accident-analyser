@@ -1,19 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import accidents, analytics
+from routers import accidents, analytics, auth
 from init_db import init_db
-from functools import lru_cache
-from config import Settings
+from config import get_settings
+
+settings = get_settings()
 
 app = FastAPI(title="Accident Analyser API")
 
 # Initialize database
 init_db()
-
-
-@lru_cache
-def get_settings():
-    return Settings()
 
 
 # Configure CORS
@@ -41,6 +37,14 @@ app.include_router(
     prefix="/api/v1/analytics",
     tags=[
         "analytics",
+    ],
+)
+
+app.include_router(
+    auth.router,
+    prefix="/api/v1/auth",
+    tags=[
+        "auth",
     ],
 )
 

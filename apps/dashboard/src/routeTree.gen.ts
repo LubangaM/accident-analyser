@@ -17,7 +17,7 @@ import { Route as AccidentsIndexImport } from './routes/accidents/index'
 import { Route as AuthSignupImport } from './routes/auth/signup'
 import { Route as AuthLoginImport } from './routes/auth/login'
 import { Route as AccidentsNewImport } from './routes/accidents/new'
-import { Route as AccidentsIdEditImport } from './routes/accidents/$id/edit'
+import { Route as AccidentsAccidentIdEditImport } from './routes/accidents/$accidentId/edit'
 
 // Create/Update Routes
 
@@ -57,9 +57,9 @@ const AccidentsNewRoute = AccidentsNewImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AccidentsIdEditRoute = AccidentsIdEditImport.update({
-  id: '/accidents/$id/edit',
-  path: '/accidents/$id/edit',
+const AccidentsAccidentIdEditRoute = AccidentsAccidentIdEditImport.update({
+  id: '/accidents/$accidentId/edit',
+  path: '/accidents/$accidentId/edit',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -109,11 +109,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccidentsIndexImport
       parentRoute: typeof rootRoute
     }
-    '/accidents/$id/edit': {
-      id: '/accidents/$id/edit'
-      path: '/accidents/$id/edit'
-      fullPath: '/accidents/$id/edit'
-      preLoaderRoute: typeof AccidentsIdEditImport
+    '/accidents/$accidentId/edit': {
+      id: '/accidents/$accidentId/edit'
+      path: '/accidents/$accidentId/edit'
+      fullPath: '/accidents/$accidentId/edit'
+      preLoaderRoute: typeof AccidentsAccidentIdEditImport
       parentRoute: typeof rootRoute
     }
   }
@@ -128,7 +128,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/accidents': typeof AccidentsIndexRoute
-  '/accidents/$id/edit': typeof AccidentsIdEditRoute
+  '/accidents/$accidentId/edit': typeof AccidentsAccidentIdEditRoute
 }
 
 export interface FileRoutesByTo {
@@ -138,7 +138,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/accidents': typeof AccidentsIndexRoute
-  '/accidents/$id/edit': typeof AccidentsIdEditRoute
+  '/accidents/$accidentId/edit': typeof AccidentsAccidentIdEditRoute
 }
 
 export interface FileRoutesById {
@@ -149,7 +149,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/accidents/': typeof AccidentsIndexRoute
-  '/accidents/$id/edit': typeof AccidentsIdEditRoute
+  '/accidents/$accidentId/edit': typeof AccidentsAccidentIdEditRoute
 }
 
 export interface FileRouteTypes {
@@ -161,7 +161,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/accidents'
-    | '/accidents/$id/edit'
+    | '/accidents/$accidentId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -170,7 +170,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/accidents'
-    | '/accidents/$id/edit'
+    | '/accidents/$accidentId/edit'
   id:
     | '__root__'
     | '/'
@@ -179,7 +179,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/accidents/'
-    | '/accidents/$id/edit'
+    | '/accidents/$accidentId/edit'
   fileRoutesById: FileRoutesById
 }
 
@@ -190,7 +190,7 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSignupRoute: typeof AuthSignupRoute
   AccidentsIndexRoute: typeof AccidentsIndexRoute
-  AccidentsIdEditRoute: typeof AccidentsIdEditRoute
+  AccidentsAccidentIdEditRoute: typeof AccidentsAccidentIdEditRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -200,7 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,
   AccidentsIndexRoute: AccidentsIndexRoute,
-  AccidentsIdEditRoute: AccidentsIdEditRoute,
+  AccidentsAccidentIdEditRoute: AccidentsAccidentIdEditRoute,
 }
 
 export const routeTree = rootRoute
@@ -219,7 +219,7 @@ export const routeTree = rootRoute
         "/auth/login",
         "/auth/signup",
         "/accidents/",
-        "/accidents/$id/edit"
+        "/accidents/$accidentId/edit"
       ]
     },
     "/": {
@@ -240,8 +240,8 @@ export const routeTree = rootRoute
     "/accidents/": {
       "filePath": "accidents/index.tsx"
     },
-    "/accidents/$id/edit": {
-      "filePath": "accidents/$id/edit.tsx"
+    "/accidents/$accidentId/edit": {
+      "filePath": "accidents/$accidentId/edit.tsx"
     }
   }
 }

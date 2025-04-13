@@ -1,6 +1,6 @@
-from pydantic import BaseModel, field_validator, field_serializer
+from pydantic import BaseModel, field_validator, field_serializer, EmailStr
 from typing import Optional, List
-from datetime import time
+from datetime import time, datetime
 
 
 class AccidentBase(BaseModel):
@@ -116,3 +116,35 @@ class AnalyticsResponse(BaseModel):
     by_road_type: List[RoadTypeStats]
     by_weather: List[WeatherStats]
     top_locations: List[LocationStats]
+
+
+class UserBase(BaseModel):
+    name: str
+    email: EmailStr
+
+
+class UserCreate(UserBase):
+    password: str
+
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class User(UserBase):
+    id: int
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    email: Optional[str] = None

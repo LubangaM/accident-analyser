@@ -39,7 +39,7 @@ export function LoginPage() {
         duration: 3000,
         isClosable: true,
       });
-      navigate({ to: "/analytics" });
+      navigate({ to: "/accidents" });
     } catch (error) {
       console.error("Login error:", error);
       toast({
