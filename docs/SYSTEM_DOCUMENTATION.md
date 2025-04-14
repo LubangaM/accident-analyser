@@ -4,9 +4,9 @@
 
 This project, the Accident Analysis Platform, has been developed entirely by me without any outsourcing. This documentation has also been prepared by me to provide a comprehensive overview of the system's development, implementation, and functionality.
 
-Student Name: \***\*\*\*\*\*\*\***\_\_\_\_\***\*\*\*\*\*\*\*** Sign: **\*\*\*\***\_**\*\*\*\*** Date: \***\*\_\_\*\***
+Student Name: **Dennis Lubanga** Sign: **DLM** Date: -
 
-Supervisor Name: \***\*\*\*\*\*\*\***\_\***\*\*\*\*\*\*\*** Sign: **\*\*\*\***\_**\*\*\*\*** Date: \***\*\_\_\*\***
+Supervisor Name:
 
 ## DEDICATION
 
@@ -164,7 +164,7 @@ This chapter presents the design and modeling aspects of the Accident Analysis P
 
 #### 2.2.1 High-Level Architecture
 
-![System Architecture Diagram](docs/images/system-architecture.png)
+![System Architecture Diagram](images/system-architecture.png)
 
 The system follows a three-tier architecture as illustrated in Figure 1.1:
 
@@ -245,7 +245,7 @@ CREATE TABLE accidents (
 
 #### 2.4.1 Landing Page
 
-![Landing Page](docs/images/landing-page.png)
+![Landing Page](images/landing-page.png)
 
 The landing page (Figure 2.1) features:
 
@@ -257,7 +257,7 @@ The landing page (Figure 2.1) features:
 
 #### 2.4.2 Authentication Interfaces
 
-![User Registration Interface](docs/images/registration.png)
+![User Registration Interface](images/registration.png)
 
 The registration interface (Figure 2.2) includes:
 
@@ -267,7 +267,7 @@ The registration interface (Figure 2.2) includes:
 - Confirm password validation
 - Clear error messaging
 
-![User Login Interface](docs/images/login.png)
+![User Login Interface](images/login.png)
 
 The login interface (Figure 2.3) provides:
 
@@ -279,7 +279,7 @@ The login interface (Figure 2.3) provides:
 
 #### 2.4.3 User Profile
 
-![User Profile Settings](docs/images/profile.png)
+![User Profile Settings](images/profile.png)
 
 The profile settings page (Figure 2.4) allows:
 
@@ -290,7 +290,7 @@ The profile settings page (Figure 2.4) allows:
 
 #### 2.4.4 Analytics Dashboard
 
-![Analytics Dashboard](docs/images/analytics.png)
+![Analytics Dashboard](images/analytics.png)
 
 The analytics dashboard (Figure 2.5) displays:
 
@@ -302,7 +302,7 @@ The analytics dashboard (Figure 2.5) displays:
 
 #### 2.4.5 Data Management
 
-![CSV Upload Interface](docs/images/csv-upload.png)
+![CSV Upload Interface](images/csv-upload.png)
 
 The CSV upload interface (Figure 2.6) features:
 
@@ -312,7 +312,7 @@ The CSV upload interface (Figure 2.6) features:
 - Preview capability
 - Validation feedback
 
-![CSV Template Download](docs/images/csv-template.png)
+![CSV Template Download](images/csv-template.png)
 
 The CSV template modal (Figure 2.7) provides:
 
@@ -323,7 +323,7 @@ The CSV template modal (Figure 2.7) provides:
 
 #### 2.4.6 Accident Management
 
-![Accidents List View](docs/images/accidents-list.png)
+![Accidents List View](images/accidents-list.png)
 
 The accidents list view (Figure 2.8) includes:
 
@@ -333,7 +333,7 @@ The accidents list view (Figure 2.8) includes:
 - Pagination
 - Filter options
 
-![New Accident Form](docs/images/new-accident.png)
+![New Accident Form](images/new-accident.png)
 
 The new accident form (Figure 2.9) contains:
 
@@ -342,7 +342,7 @@ The new accident form (Figure 2.9) contains:
 - Help text
 - Clear section organization
 
-![Edit Accident Form](docs/images/edit-accident.png)
+![Edit Accident Form](images/edit-accident.png)
 
 The edit accident form (Figure 2.10) provides:
 
