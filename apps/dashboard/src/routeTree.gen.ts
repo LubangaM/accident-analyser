@@ -19,6 +19,7 @@ import { Route as AuthSignupImport } from './routes/auth/signup'
 import { Route as AuthLoginImport } from './routes/auth/login'
 import { Route as AccidentsUploadImport } from './routes/accidents/upload'
 import { Route as AccidentsNewImport } from './routes/accidents/new'
+import { Route as AccidentsAccidentIdIndexImport } from './routes/accidents/$accidentId/index'
 import { Route as AccidentsAccidentIdEditImport } from './routes/accidents/$accidentId/edit'
 
 // Create/Update Routes
@@ -68,6 +69,12 @@ const AccidentsUploadRoute = AccidentsUploadImport.update({
 const AccidentsNewRoute = AccidentsNewImport.update({
   id: '/accidents/new',
   path: '/accidents/new',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AccidentsAccidentIdIndexRoute = AccidentsAccidentIdIndexImport.update({
+  id: '/accidents/$accidentId/',
+  path: '/accidents/$accidentId/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -144,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccidentsAccidentIdEditImport
       parentRoute: typeof rootRoute
     }
+    '/accidents/$accidentId/': {
+      id: '/accidents/$accidentId/'
+      path: '/accidents/$accidentId'
+      fullPath: '/accidents/$accidentId'
+      preLoaderRoute: typeof AccidentsAccidentIdIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -159,6 +173,7 @@ export interface FileRoutesByFullPath {
   '/auth/signup': typeof AuthSignupRoute
   '/accidents': typeof AccidentsIndexRoute
   '/accidents/$accidentId/edit': typeof AccidentsAccidentIdEditRoute
+  '/accidents/$accidentId': typeof AccidentsAccidentIdIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -171,6 +186,7 @@ export interface FileRoutesByTo {
   '/auth/signup': typeof AuthSignupRoute
   '/accidents': typeof AccidentsIndexRoute
   '/accidents/$accidentId/edit': typeof AccidentsAccidentIdEditRoute
+  '/accidents/$accidentId': typeof AccidentsAccidentIdIndexRoute
 }
 
 export interface FileRoutesById {
@@ -184,6 +200,7 @@ export interface FileRoutesById {
   '/auth/signup': typeof AuthSignupRoute
   '/accidents/': typeof AccidentsIndexRoute
   '/accidents/$accidentId/edit': typeof AccidentsAccidentIdEditRoute
+  '/accidents/$accidentId/': typeof AccidentsAccidentIdIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -198,6 +215,7 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/accidents'
     | '/accidents/$accidentId/edit'
+    | '/accidents/$accidentId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -209,6 +227,7 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/accidents'
     | '/accidents/$accidentId/edit'
+    | '/accidents/$accidentId'
   id:
     | '__root__'
     | '/'
@@ -220,6 +239,7 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/accidents/'
     | '/accidents/$accidentId/edit'
+    | '/accidents/$accidentId/'
   fileRoutesById: FileRoutesById
 }
 
@@ -233,6 +253,7 @@ export interface RootRouteChildren {
   AuthSignupRoute: typeof AuthSignupRoute
   AccidentsIndexRoute: typeof AccidentsIndexRoute
   AccidentsAccidentIdEditRoute: typeof AccidentsAccidentIdEditRoute
+  AccidentsAccidentIdIndexRoute: typeof AccidentsAccidentIdIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -245,6 +266,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthSignupRoute: AuthSignupRoute,
   AccidentsIndexRoute: AccidentsIndexRoute,
   AccidentsAccidentIdEditRoute: AccidentsAccidentIdEditRoute,
+  AccidentsAccidentIdIndexRoute: AccidentsAccidentIdIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -265,7 +287,8 @@ export const routeTree = rootRoute
         "/auth/login",
         "/auth/signup",
         "/accidents/",
-        "/accidents/$accidentId/edit"
+        "/accidents/$accidentId/edit",
+        "/accidents/$accidentId/"
       ]
     },
     "/": {
@@ -294,6 +317,9 @@ export const routeTree = rootRoute
     },
     "/accidents/$accidentId/edit": {
       "filePath": "accidents/$accidentId/edit.tsx"
+    },
+    "/accidents/$accidentId/": {
+      "filePath": "accidents/$accidentId/index.tsx"
     }
   }
 }

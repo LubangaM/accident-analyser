@@ -45,6 +45,7 @@ import {
   FaSortUp,
   FaSortDown,
   FaUpload,
+  FaEye,
 } from "react-icons/fa";
 import { format } from "date-fns";
 import { CsvUploadForm } from "./CsvUploadForm";
@@ -205,23 +206,14 @@ export function AccidentList() {
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th cursor="pointer" onClick={() => handleSort("date")}>
-                <Flex align="center" gap={2}>
-                  Date & Location
-                  {sortField === "date" ? (
-                    sortOrder === "asc" ? (
-                      <FaSortUp />
-                    ) : (
-                      <FaSortDown />
-                    )
-                  ) : (
-                    <FaSort />
-                  )}
-                </Flex>
-              </Th>
-              <Th cursor="pointer" onClick={() => handleSort("severity")}>
-                <Flex align="center" gap={2}>
-                  Severity
+              <Th>Date</Th>
+              <Th>
+                <HStack
+                  spacing={2}
+                  cursor="pointer"
+                  onClick={() => handleSort("severity")}
+                >
+                  <Text>Severity</Text>
                   {sortField === "severity" ? (
                     sortOrder === "asc" ? (
                       <FaSortUp />
@@ -231,11 +223,16 @@ export function AccidentList() {
                   ) : (
                     <FaSort />
                   )}
-                </Flex>
+                </HStack>
               </Th>
-              <Th cursor="pointer" onClick={() => handleSort("vehicles")}>
-                <Flex align="center" gap={2}>
-                  Vehicles
+              <Th>Location</Th>
+              <Th>
+                <HStack
+                  spacing={2}
+                  cursor="pointer"
+                  onClick={() => handleSort("vehicles")}
+                >
+                  <Text>Vehicles</Text>
                   {sortField === "vehicles" ? (
                     sortOrder === "asc" ? (
                       <FaSortUp />
@@ -245,11 +242,15 @@ export function AccidentList() {
                   ) : (
                     <FaSort />
                   )}
-                </Flex>
+                </HStack>
               </Th>
-              <Th cursor="pointer" onClick={() => handleSort("casualties")}>
-                <Flex align="center" gap={2}>
-                  Casualties
+              <Th>
+                <HStack
+                  spacing={2}
+                  cursor="pointer"
+                  onClick={() => handleSort("casualties")}
+                >
+                  <Text>Casualties</Text>
                   {sortField === "casualties" ? (
                     sortOrder === "asc" ? (
                       <FaSortUp />
@@ -259,11 +260,11 @@ export function AccidentList() {
                   ) : (
                     <FaSort />
                   )}
-                </Flex>
+                </HStack>
               </Th>
-              <Th>Road Type</Th>
-              <Th>Weather</Th>
-              <Th textAlign="center">Actions</Th>
+              <Th textAlign="right" width="150px">
+                Actions
+              </Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -271,47 +272,44 @@ export function AccidentList() {
               <Tr
                 key={accident.id}
                 _hover={{ bg: useColorModeValue("gray.50", "gray.700") }}
+                cursor="pointer"
+                onClick={() => {
+                  window.location.href = `/accidents/${accident.id}`;
+                }}
               >
-                <Td>
-                  <VStack align="start" spacing={1}>
-                    <Text fontWeight="medium">
-                      {format(new Date(accident.date), "MMM d, yyyy")}
-                    </Text>
-                    {accident.longitude && accident.latitude ? (
-                      <Text fontSize="sm" color="gray.500">
-                        {accident.longitude.toFixed(4)},{" "}
-                        {accident.latitude.toFixed(4)}
-                      </Text>
-                    ) : (
-                      <Text fontSize="sm" color="gray.500">
-                        Location not available
-                      </Text>
-                    )}
-                  </VStack>
-                </Td>
+                <Td>{format(new Date(accident.date), "PPP")}</Td>
                 <Td>{getSeverityBadge(accident.accident_severity)}</Td>
-                <Td>{accident.number_of_vehicles || "N/A"}</Td>
-                <Td>{accident.number_of_casualties || "N/A"}</Td>
-                <Td>{accident.road_type || "N/A"}</Td>
-                <Td>{accident.weather_conditions || "N/A"}</Td>
-                <Td width="120px">
-                  <HStack spacing={3} justify="flex-end">
-                    <Tooltip label="Edit">
+                <Td>{accident.local_authority_district || "Unknown"}</Td>
+                <Td>{accident.number_of_vehicles || 0}</Td>
+                <Td>{accident.number_of_casualties || 0}</Td>
+                <Td onClick={(e) => e.stopPropagation()} textAlign="right">
+                  <HStack spacing={2} justify="flex-end">
+                    <Tooltip label="View Details">
                       <IconButton
                         as={RouterLink}
-                        to="/accidents/$id/edit"
-                        params={{ id: String(accident.id) }}
-                        aria-label="Edit accident"
-                        icon={<FaEdit />}
+                        to={`/accidents/${accident.id}`}
+                        icon={<FaEye />}
+                        aria-label="View details"
                         size="sm"
                         colorScheme="blue"
                         variant="ghost"
                       />
                     </Tooltip>
+                    <Tooltip label="Edit">
+                      <IconButton
+                        as={RouterLink}
+                        to={`/accidents/${accident.id}/edit`}
+                        icon={<FaEdit />}
+                        aria-label="Edit"
+                        size="sm"
+                        colorScheme="green"
+                        variant="ghost"
+                      />
+                    </Tooltip>
                     <Tooltip label="Delete">
                       <IconButton
-                        aria-label="Delete accident"
                         icon={<FaTrash />}
+                        aria-label="Delete"
                         size="sm"
                         colorScheme="red"
                         variant="ghost"
